@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\MasterMotorController;
+use App\Http\Controllers\ModulePenyewaanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +18,6 @@ use App\Http\Controllers\MasterMotorController;
 | contains the 'web' middleware group. Now create something great!
 |
 */
-
-
 
 
 
@@ -38,9 +37,31 @@ Route::group(['prefix' => '/master-data', 'middleware' => ['auth']], function(){
         Route::get('/', [MasterMotorController::class, 'index']);
         Route::get('/list-data', [MasterMotorController::class, 'listData']);
         Route::get('{id}/info', [MasterMotorController::class, 'viewForm']);
+        Route::get('{id}/edit', [MasterMotorController::class, 'editForm']);
+        Route::post('{id}/edit', [MasterMotorController::class, 'updateData']);
         Route::get('/add', [MasterMotorController::class, 'addForm']);
         Route::post('/add', [MasterMotorController::class, 'addData']);
 
     });
 });
+
+Route::group(['prefix' => '/module-penyewaan', 'middleware' => ['auth']], function(){
+    Route::prefix('/module-sewa')->group(function(){
+        Route::get('/', [ModulePenyewaanController::class, 'index']);
+        Route::get('/list-data', [ModulePenyewaanController::class, 'listData']);
+        Route::get('{id}/info', [ModulePenyewaanController::class, 'viewForm']);
+        Route::get('{id}/edit', [ModulePenyewaanController::class, 'editForm']);
+        Route::post('{id}/edit', [ModulePenyewaanController::class, 'updateData']);
+        Route::get('/add', [ModulePenyewaanController::class, 'addForm']);
+        Route::post('/add', [ModulePenyewaanController::class, 'addData']);
+
+    });
+});
+
+Route::group(['prefix' => '/resources', 'middleware' => ['auth']], function(){
+    Route::get('/list-motor', [MasterMotorController::class, 'listDataMotor']);
+    Route::get('/{id}/list-motor', [MasterMotorController::class, 'listDataMotor']);
+});
+
+
 

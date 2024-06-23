@@ -18,7 +18,7 @@ class MasterMotorController extends Controller
 
     public function listData()
     {
-        $model = MasterMotor::query();
+        $model = MasterMotor::orderBy('id', 'DESC');
         return DataTables::of($model)
             ->editColumn('harga_sewa_harian', function ($model) {
                 return  'Rp. ' . number_format($model->harga_sewa_harian, 0, ',', '.');
@@ -40,18 +40,41 @@ class MasterMotorController extends Controller
             ->toJson();
     }
 
-    public function viewForm($id){
+    public function listDataMotor(Request $request,$id = null)
+    {
+
+        if ($id != null) {
+            $data = MasterMotor::where('status',  1)->where('id', $id);
+        } else {
+            $data = $request->all();
+            $search_word = !empty($data) ? $data["name"] : '';
+            $data = MasterMotor::where('status',  1)->where('name', 'LIKE', '%'.$search_word.'%');
+        }
+        $data = $data->get(['id', 'name', 'nomor_polisi']);
+        return response()->json($data);
+    }
+
+    public function viewForm($id)
+    {
         $data = MasterMotor::where('id', $id)->first();
         return view('master-motor.info', ['data' => $data]);
     }
+
 
     public function addForm()
     {
         return view('master-motor.add');
     }
 
+    public function editForm($id)
+    {
+        $data = MasterMotor::where('id', $id)->first();
+        return view('master-motor.edit', ['data' => $data]);
+    }
+
     public function addData(Request $request)
     {
+        
         $request->validate(
             [
                 'nomor_polisi' => 'required|unique:master_motors',
@@ -98,6 +121,55 @@ class MasterMotorController extends Controller
 
             DB::rollBack();
             return redirect("master-data/master-motor/")->with("error", "Data gagal ditambahkan! " . $e->getMessage());
+        }
+    }
+
+    public function updateData(Request $request, $id)
+    {
+
+        $request->validate(
+            [
+                'nomor_polisi' => "required|unique:master_motors,nomor_polisi,{$id}",
+                'img_url' => 'image|mimes:jpeg, jpg, png|max:2048'
+            ],
+            [
+                'nomor_polisi.unique' => 'Nomor Polisi sudah ada sebelumnya!'
+            ]
+        );
+
+        DB::beginTransaction();
+        try {
+            $data = MasterMotor::where('id', $id)->first();
+            if ($request->hasFile('img_url')) {
+                $image = $request->file('img_url');
+                $image_name = time() . $request->name .  '.' . $image->getClientOriginalExtension();
+                $destination_path = public_path('motor_images');
+                $image->move($destination_path, $image_name);
+
+                $image_path = public_path('motor_images/' . $data->img_url . '');
+                if (File::exists($image_path)) {
+                    File::delete($image_path);
+                }
+            }
+            $data->update([
+                'name' => $request->input('name'),
+                'nomor_polisi' => $request->input('nomor_polisi'),
+                'nama_pemilik' => $request->input('nama_pemilik'),
+                'tahun_pembuatan' => $request->input('tahun_pembuatan'),
+                'warna_kb' => $request->input('warna_kb'),
+                'img_url' => $request->hasFile('img_url') ? $image_name : $data->img_url,
+                'tanggal_pajak' => $request->input("tanggal_pajak"),
+                'tanggal_pembelian' => $request->input('tanggal_pembelian'),
+                'harga_sewa_harian' => (int) preg_replace('/[^0-9]/', '', $request->input('harga_sewa_harian')),
+                'harga_sewa_bulanan' => (int) preg_replace('/[^0-9]/', '', $request->input('harga_sewa_bulanan')),
+            ]);
+
+            DB::commit();
+            return redirect("master-data/master-motor/$id/edit")->with("success", "Data berhasil diubah!");
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+            return redirect("master-data/master-motor/$id/edit")->with("error", "Data gagal ditambahkan! " . $e->getMessage());
         }
     }
 }

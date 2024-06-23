@@ -59,7 +59,7 @@ class MasterMenuSeeder extends Seeder
             'title' => ' Master Penyewa',
             'code' => 'master-penyewa',
             'is_dropdown' => 0,
-            'is_hidden' => 0,
+            'is_hidden' => 1,
             'priority' => 1,
             'icon' => ''
         ]);
