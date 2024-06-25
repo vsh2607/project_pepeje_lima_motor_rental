@@ -65,9 +65,12 @@
                 processing: true,
                 serverside: true,
                 ajax: "{{ url('/module-penyewaan/module-sewa/list-data') }}",
+                order: [],
                 columns: [{
-                        data: 'id',
-                        name: 'id',
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            return meta.row + 1;
+                        }
                     },
                     {
                         data: 'motor.name',

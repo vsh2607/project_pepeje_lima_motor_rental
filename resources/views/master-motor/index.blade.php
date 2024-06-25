@@ -56,9 +56,17 @@
                 processing: true,
                 serverside: true,
                 ajax: "{{ url('/master-data/master-motor/list-data') }}",
+                columnDefs: [{
+                    "targets": [0],
+                    "visible": true,
+                    "searchable": false,
+                    "orderable": false,
+                }, ],
                 columns: [{
-                        data: 'id',
-                        name: 'id'
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            return meta.row + 1;
+                        }
                     },
                     {
                         data: 'name',

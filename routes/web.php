@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\MasterMotorController;
+use App\Http\Controllers\ModulePengembalianController;
 use App\Http\Controllers\ModulePenyewaanController;
 
 /*
@@ -56,11 +57,25 @@ Route::group(['prefix' => '/module-penyewaan', 'middleware' => ['auth']], functi
         Route::post('/add', [ModulePenyewaanController::class, 'addData']);
 
     });
+
+    Route::prefix('/module-kembali')->group(function(){
+        Route::get('/', [ModulePengembalianController::class, 'index']);
+        Route::get('/list-data', [ModulePengembalianController::class, 'listData']);
+        Route::get('{id}/info', [ModulePengembalianController::class, 'viewForm']);
+        Route::get('{id}/edit', [ModulePengembalianController::class, 'editForm']);
+        Route::post('{id}/edit', [ModulePengembalianController::class, 'updateData']);
+        Route::get('/add', [ModulePengembalianController::class, 'addForm']);
+        Route::post('/add', [ModulePengembalianController::class, 'addData']);
+        Route::get('{id}/return', [ModulePengembalianController::class, 'returnMotor']);
+
+    });
 });
 
 Route::group(['prefix' => '/resources', 'middleware' => ['auth']], function(){
     Route::get('/list-motor', [MasterMotorController::class, 'listDataMotor']);
     Route::get('/{id}/list-motor', [MasterMotorController::class, 'listDataMotor']);
+    Route::get('/list-motor-sewa', [MasterMotorController::class, 'listDataRented']);
+    Route::get('/data-penyewaan', [ModulePenyewaanController::class, 'dataPenyewaan']);
 });
 
 

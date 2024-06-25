@@ -82,7 +82,7 @@
                             <label class='required' for="tanggal_penyewaan">Tanggal Penyewaan</label>
                             <input required readonly type="text" name="tanggal_penyewaan" id="tanggal_penyewaan"
                                 class="form-control my-input" placeholder="MASUKKAN TANGGAL PENYEWAAN"
-                                value="{{ \Carbon\Carbon::today()->toDateString() }}">
+                                value="{{ $data->tanggal_penyewaan }}">
                         </div>
                         {{-- <div class="form-group">
 

@@ -19,7 +19,8 @@ class ModulePenyewaanController extends Controller
 
     public function listData()
     {
-        $model = ModulePenyewaan::with(['motor'])->orderBy('id', 'ASC');
+        $model = ModulePenyewaan::with(['motor'])->orderBy('module_penyewaans.created_at', 'desc');
+
         return DataTables::of($model)
             ->addColumn('harga_sewa', function ($model) {
                 if ($model->jenis_penyewaan == 'harian') {
@@ -77,6 +78,7 @@ class ModulePenyewaanController extends Controller
 
         return view('module-penyewaan.info', ['data' => $data, 'total_hari_sewa' => $interval, 'total_biaya_sewa' => $total_sewa]);
     }
+
 
     public function addForm()
     {
@@ -193,5 +195,39 @@ class ModulePenyewaanController extends Controller
             DB::rollBack();
             return redirect("module-penyewaan/module-sewa/")->with("error", "Data gagal ditambahkan! " . $e->getMessage());
         }
+    }
+
+    public function dataPenyewaan(Request $request)
+    {
+        $requestData = $request->all();
+
+        if ($requestData["id_nomor_polisi"] != null) {
+            $data = ModulePenyewaan::with(['motor'])->whereHas('motor', function ($query) use ($requestData) {
+                $query->where('id', $requestData["id_nomor_polisi"]);
+            })->first();
+        }
+
+        $tanggal_penyewaan = new DateTime($data->tanggal_penyewaan);
+        $tanggal_hari_ini = new DateTime();
+        $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
+
+        if ($data->jenis_penyewaan == 'harian') {
+            $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
+            $total_sewa = $interval <= 0 ? $data->motor->harga_sewa_harian : $data->motor->harga_sewa_harian * $interval;
+        } else {
+            $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
+            $total_sewa = $interval <= 0 ? $data->motor->harga_sewa_harian : $data->motor->harga_sewa_harian * $interval;
+        }
+
+        $total_sewa = 'Rp. ' . number_format($total_sewa, 0, ',', '.');
+
+        $mergedData = [
+            'data' => $data,
+            'total_sewa' => $total_sewa,
+            'interval' => $interval
+        ];
+
+
+        return response()->json($mergedData);
     }
 }

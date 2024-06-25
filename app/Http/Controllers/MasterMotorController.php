@@ -40,7 +40,7 @@ class MasterMotorController extends Controller
             ->toJson();
     }
 
-    public function listDataMotor(Request $request,$id = null)
+    public function listDataMotor(Request $request, $id = null)
     {
 
         if ($id != null) {
@@ -48,10 +48,22 @@ class MasterMotorController extends Controller
         } else {
             $data = $request->all();
             $search_word = !empty($data) ? $data["name"] : '';
-            $data = MasterMotor::where('status',  1)->where('name', 'LIKE', '%'.$search_word.'%');
+            $data = MasterMotor::where('status',  1)->where('name', 'LIKE', '%' . $search_word . '%');
         }
         $data = $data->get(['id', 'name', 'nomor_polisi']);
         return response()->json($data);
+    }
+
+
+    public function listDataRented(Request $request)
+    {
+        $data = $request->all();
+        $search_word = array_key_exists("name", $data) ? $data["name"] : '';
+
+        $data = MasterMotor::where('status',  0)->where('nomor_polisi', 'LIKE', '%' . $search_word . '%');
+
+        $data = $data->get(['id', 'name', 'nomor_polisi']);
+        return $data;
     }
 
     public function viewForm($id)
@@ -74,7 +86,7 @@ class MasterMotorController extends Controller
 
     public function addData(Request $request)
     {
-        
+
         $request->validate(
             [
                 'nomor_polisi' => 'required|unique:master_motors',
