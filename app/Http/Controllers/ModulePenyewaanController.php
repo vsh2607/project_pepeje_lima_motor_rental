@@ -30,7 +30,13 @@ class ModulePenyewaanController extends Controller
             })
             ->addColumn('total_sewa', function ($model) {
                 $tanggal_penyewaan = new DateTime($model->tanggal_penyewaan);
-                $tanggal_hari_ini = new DateTime();
+                if ($model->tanggal_pengembalian != null) {
+                    //Ini kalau sdh kembali
+                    $tanggal_hari_ini = new DateTime($model->tanggal_pengembalian);
+                } else {
+                    $tanggal_hari_ini = new DateTime();
+                }
+                $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
 
                 if ($model->jenis_penyewaan == 'harian') {
                     $interval = $tanggal_hari_ini->diff($tanggal_penyewaan);
@@ -48,10 +54,10 @@ class ModulePenyewaanController extends Controller
                 return $status;
             })
             ->addColumn('action', function ($model) {
-                $infoButton = "<a href='" . url('module-penyewaan/module-sewa/' . $model->id . '/info') . "' class='btn  btn-primary d-inline-block'><i class='fas fa-info'></i></a>";
-                $editButton = "&nbsp;<a href='" . url('module-penyewaan/module-sewa/' . $model->id . '/edit') . "' class='btn  btn-warning d-inline-block'><i class='fas fa-edit'></i></a>";
+                $infoButton = "<a href='" . url('module-manajemen/module-sewa/' . $model->id . '/info') . "' class='btn  btn-primary d-inline-block'><i class='fas fa-info'></i></a>";
+                $editButton = "&nbsp;<a href='" . url('module-manajemen/module-sewa/' . $model->id . '/edit') . "' class='btn  btn-warning d-inline-block'><i class='fas fa-edit'></i></a>";
                 $deleteButton = "&nbsp;<a href='#' class='btn  btn-danger d-inline-block'><i class='fas fa-trash'></i></a>";
-                if($model->status == 0){
+                if ($model->status == 0) {
                     return $infoButton;
                 }
                 return $infoButton . $editButton;
@@ -63,8 +69,14 @@ class ModulePenyewaanController extends Controller
     public function viewForm($id)
     {
         $data = ModulePenyewaan::with(['motor'])->where('id', $id)->first();
+
         $tanggal_penyewaan = new DateTime($data->tanggal_penyewaan);
-        $tanggal_hari_ini = new DateTime();
+        if ($data->tanggal_pengembalian != null) {
+            //Ini kalau sdh kembali
+            $tanggal_hari_ini = new DateTime($data->tanggal_pengembalian);
+        } else {
+            $tanggal_hari_ini = new DateTime();
+        }
         $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
 
         if ($data->jenis_penyewaan == 'harian') {
@@ -93,7 +105,12 @@ class ModulePenyewaanController extends Controller
     {
         $data = ModulePenyewaan::with(['motor'])->where('id', $id)->first();
         $tanggal_penyewaan = new DateTime($data->tanggal_penyewaan);
-        $tanggal_hari_ini = new DateTime();
+        if ($data->tanggal_pengembalian != null) {
+            //Ini kalau sdh kembali
+            $tanggal_hari_ini = new DateTime($data->tanggal_pengembalian);
+        } else {
+            $tanggal_hari_ini = new DateTime();
+        }
         $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
 
         if ($data->jenis_penyewaan == 'harian') {
@@ -155,10 +172,10 @@ class ModulePenyewaanController extends Controller
             ]);
 
             DB::commit();
-            return redirect("module-penyewaan/module-sewa/$id/edit")->with("success", "Data berhasil diubah!");
+            return redirect("module-manajemen/module-sewa/$id/edit")->with("success", "Data berhasil diubah!");
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect("module-penyewaan/module-sewa/$id/edit")->with("error", "Data gagal diubah! " . $e->getMessage());
+            return redirect("module-manajemen/module-sewa/$id/edit")->with("error", "Data gagal diubah! " . $e->getMessage());
         }
     }
 
@@ -193,10 +210,10 @@ class ModulePenyewaanController extends Controller
             ]);
 
             DB::commit();
-            return redirect("module-penyewaan/module-sewa/")->with("success", "Data berhasil ditambahkan!");
+            return redirect("module-manajemen/module-sewa/")->with("success", "Data berhasil ditambahkan!");
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect("module-penyewaan/module-sewa/")->with("error", "Data gagal ditambahkan! " . $e->getMessage());
+            return redirect("module-manajemen/module-sewa/")->with("error", "Data gagal ditambahkan! " . $e->getMessage());
         }
     }
 
@@ -207,9 +224,8 @@ class ModulePenyewaanController extends Controller
         if ($requestData["id_nomor_polisi"] != null) {
             $data = ModulePenyewaan::with(['motor'])->whereHas('motor', function ($query) use ($requestData) {
                 $query->where('id', $requestData["id_nomor_polisi"]);
-            })->first();
+            })->where('status', 1)->first();
         }
-
         $tanggal_penyewaan = new DateTime($data->tanggal_penyewaan);
         $tanggal_hari_ini = new DateTime();
         $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
@@ -221,16 +237,12 @@ class ModulePenyewaanController extends Controller
             $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
             $total_sewa = $interval <= 0 ? $data->motor->harga_sewa_harian : $data->motor->harga_sewa_harian * $interval;
         }
-
         $total_sewa = 'Rp. ' . number_format($total_sewa, 0, ',', '.');
-
         $mergedData = [
             'data' => $data,
             'total_sewa' => $total_sewa,
             'interval' => $interval
         ];
-
-
         return response()->json($mergedData);
     }
 }

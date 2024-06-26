@@ -36,23 +36,23 @@ class MasterMenuSeeder extends Seeder
 
         MasterMenu::create([
             'level' => 0,
-            'title' => ' Module Penyewaan',
-            'code' => 'module-penyewaan',
+            'title' => ' Module Manajemen',
+            'code' => 'module-manajemen',
             'is_dropdown' => 1,
             'is_hidden' => 0,
             'priority' => 2,
             'icon' => 'fa fa-bicycle'
         ]);
 
-        // MasterMenu::create([
-        //     'level' => 0,
-        //     'title' => ' Module Arus Uang',
-        //     'code' => 'module-arus-uang',
-        //     'is_dropdown' => 1,
-        //     'is_hidden' => 0,
-        //     'priority' => 3,
-        //     'icon' => 'fa fa-shopping-cart'
-        // ]);
+        MasterMenu::create([
+            'level' => 0,
+            'title' => ' Module Arus Uang',
+            'code' => 'module-arus-uang',
+            'is_dropdown' => 1,
+            'is_hidden' => 0,
+            'priority' => 3,
+            'icon' => 'fa fa-shopping-cart'
+        ]);
 
 
 
@@ -94,26 +94,33 @@ class MasterMenuSeeder extends Seeder
             'icon' => ''
         ]);
 
-        // MasterMenu::create([
-        //     'level' => 4,
-        //     'title' => 'Arus Uang Masuk',
-        //     'code' => 'module-arus-uang-masuk',
-        //     'is_dropdown' => 0,
-        //     'is_hidden' => 0,
-        //     'priority' => 0,
-        //     'icon' => ''
-        // ]);
-        // MasterMenu::create([
-        //     'level' => 4,
-        //     'title' => 'Arus Uang Keluar',
-        //     'code' => 'module-arus-uang-keluar',
-        //     'is_dropdown' => 0,
-        //     'is_hidden' => 0,
-        //     'priority' => 1,
-        //     'icon' => ''
-        // ]);
+        MasterMenu::create([
+            'level' => 3,
+            'title' => ' Administrasi Motor',
+            'code' => 'module-administrasi-motor',
+            'is_dropdown' => 0,
+            'is_hidden' => 0,
+            'priority' => 1,
+            'icon' => ''
+        ]);
 
-
-
+        MasterMenu::create([
+            'level' => 4,
+            'title' => 'Arus Uang Masuk',
+            'code' => 'module-arus-uang-masuk',
+            'is_dropdown' => 0,
+            'is_hidden' => 0,
+            'priority' => 0,
+            'icon' => ''
+        ]);
+        MasterMenu::create([
+            'level' => 4,
+            'title' => 'Arus Uang Keluar',
+            'code' => 'module-arus-uang-keluar',
+            'is_dropdown' => 0,
+            'is_hidden' => 0,
+            'priority' => 1,
+            'icon' => ''
+        ]);
     }
 }

@@ -54,8 +54,10 @@
         $(document).ready(function() {
             $('#list_table').DataTable({
                 processing: true,
-                serverside: true,
-                ajax: "{{ url('/master-data/master-motor/list-data') }}",
+                serverSide: true,
+                ajax: {
+                    url: "{{ url('/master-data/master-motor/list-data') }}",
+                },
                 columnDefs: [{
                     "targets": [0],
                     "visible": true,

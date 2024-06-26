@@ -179,7 +179,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         var penyewaanId = $('#penyewaan_id').val();
-                        var url = `{{ url('module-penyewaan/module-kembali/${penyewaanId}/return') }}`;
+                        var url = `{{ url('module-manajemen/module-kembali/${penyewaanId}/return') }}`;
                         window.open(url, '_blank');
                         location.reload();
                     }

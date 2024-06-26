@@ -16,7 +16,7 @@ class MasterMotorController extends Controller
         return view('master-motor.index');
     }
 
-    public function listData()
+    public function listData(Request $request)
     {
         $model = MasterMotor::orderBy('id', 'DESC');
         return DataTables::of($model)
@@ -50,6 +50,16 @@ class MasterMotorController extends Controller
             $search_word = !empty($data) ? $data["name"] : '';
             $data = MasterMotor::where('status',  1)->where('name', 'LIKE', '%' . $search_word . '%');
         }
+        $data = $data->get(['id', 'name', 'nomor_polisi']);
+        return response()->json($data);
+    }
+
+
+    public function listAllDataMotor(Request $request, $id = null)
+    {
+        $data = $request->all();
+        $search_word = !empty($data) ? $data["name"] : '';
+        $data = MasterMotor::where('name', 'LIKE', '%' . $search_word . '%');
         $data = $data->get(['id', 'name', 'nomor_polisi']);
         return response()->json($data);
     }

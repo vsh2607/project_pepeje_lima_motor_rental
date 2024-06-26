@@ -35,7 +35,7 @@
                 <div class="icon">
                     <i class="fa fa-bicycle"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{ url('/module-arus-uang/module-arus-uang-masuk') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <div class="col-lg-4 col-6">

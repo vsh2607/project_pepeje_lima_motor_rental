@@ -25,7 +25,11 @@ class ModulePengembalianController extends Controller
         try {
             $penyewaan = ModulePenyewaan::with(['motor'])->where('id', $id)->first();
 
-            $penyewaan->update(['status' => 0]);
+            $penyewaan->update([
+                'status' => 0,
+                'tanggal_pengembalian' => Carbon::now()->format('Y-m-d')
+
+            ]);
             MasterMotor::where('id', $penyewaan->motor->id)->update(['status' => 1]);
 
 
@@ -41,7 +45,7 @@ class ModulePengembalianController extends Controller
                 $total_sewa = $interval <= 0 ? $penyewaan->motor->harga_sewa_harian : $penyewaan->motor->harga_sewa_harian * $interval;
             }
 
-            LogDebit::addDebit($penyewaan, $total_sewa);
+            LogDebit::addDebit($penyewaan, $total_sewa, $interval);
             $jaminan_file_path = public_path('/jaminan_images/'.$penyewaan->jaminan_img);
             if(File::exists($jaminan_file_path)){
                 File::delete($jaminan_file_path);
@@ -71,7 +75,7 @@ class ModulePengembalianController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect("/module-penyewaan/module-kembali/")->with("error", "Data gagal ditambahkan! " . $e->getMessage());
+            return redirect("/module-manajemen/module-kembali/")->with("error", "Data gagal ditambahkan! " . $e->getMessage());
         }
     }
 

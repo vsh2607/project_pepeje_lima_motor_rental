@@ -11,9 +11,9 @@ class LogDebit extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['id_module_penyewaan', 'debit', 'total_debit', 'remark'];
+    protected $fillable = ['id_module_penyewaan', 'debit', 'total_debit', 'remark', 'total_hari_sewa'];
 
-    static public function addDebit($penyewaan, $total_sewa)
+    static public function addDebit($penyewaan, $total_sewa, $total_hari_sewa)
     {
         $total_last_debit = LogDebit::orderBy('id', 'DESC')->select('total_debit')->first();
         $total_last_debit = $total_last_debit->total_debit ?? 0;
@@ -22,9 +22,21 @@ class LogDebit extends Model
             LogDebit::create([
                 'id_module_penyewaan' => $penyewaan->id,
                 'debit' => $total_sewa,
+                'total_hari_sewa' => $total_hari_sewa,
                 'total_debit' => $total_last_debit + $total_sewa,
                 'remark' => "Sewa, " . $penyewaan->motor->name . ", " . $penyewaan->nama_penyewa
             ]);
         }
+    }
+
+    static public function totalDebit(){
+        $total_last_debit = LogDebit::orderBy('id', 'DESC')->select('total_debit')->first();
+        $total_last_debit = $total_last_debit->total_debit ?? 0;
+        return $total_last_debit;
+    }
+
+
+    public function penyewaan(){
+        return $this->belongsTo(ModulePenyewaan::class, 'id_module_penyewaan', 'id');
     }
 }

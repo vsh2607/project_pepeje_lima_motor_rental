@@ -27,7 +27,7 @@
     <div class="container-fluid" style="margin-top:20px; text-transform: uppercase;">
         <div class="card">
             <div class="card-header">
-                <a href="{{ url('/module-penyewaan/module-sewa/add') }}" class="btn btn-success btn-sm float-right">+
+                <a href="{{ url('/module-manajemen/module-sewa/add') }}" class="btn btn-success btn-sm float-right">+
                     Tambah</a>
             </div>
             <div class="card-body">
@@ -64,7 +64,7 @@
             $('#list_table').DataTable({
                 processing: true,
                 serverside: true,
-                ajax: "{{ url('/module-penyewaan/module-sewa/list-data') }}",
+                ajax: "{{ url('/module-manajemen/module-sewa/list-data') }}",
                 order: [],
                 columns: [{
                         data: null,

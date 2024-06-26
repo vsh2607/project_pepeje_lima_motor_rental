@@ -16,6 +16,7 @@ class CreateLogDebitsTable extends Migration
         Schema::create('log_debits', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('id_module_penyewaan');
+            $table->integer('total_hari_sewa');
             $table->bigInteger('debit');
             $table->bigInteger('total_debit');
             $table->text('remark');
