@@ -70,6 +70,11 @@
                             class="form-control my-input" placeholder="Masukkan Harga Sewa Bulanan">
                     </div>
                     <div class="form-group">
+                        <label class='required' for="modal_awal_motor">Modal Awal Motor</label>
+                        <input required type="text" name="modal_awal_motor" id="modal_awal_motor"
+                            class="form-control my-input" placeholder="Masukkan Modal Awal Motor">
+                    </div>
+                    <div class="form-group">
                         <label for="img_url">Upload Gambar Kendaraan</label>
                         <input type="file" name="img_url" id="img_url" class="form-control"
                             placeholder="Upload Gambar Kendaraan">
@@ -112,5 +117,9 @@
         $('#harga_sewa_bulanan').on('input', function() {
             formatInputPriceValue("#harga_sewa_bulanan");
         });
+
+        $('#modal_awal_motor').on('input', function(){
+            formatInputPriceValue("#modal_awal_motor");
+        })
     </script>
 @stop

@@ -25,7 +25,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2024-06-11',
             'harga_sewa_harian' => 20000,
             'harga_sewa_bulanan' => 100000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -39,7 +39,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2023-05-10',
             'harga_sewa_harian' => 22000,
             'harga_sewa_bulanan' => 110000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -53,7 +53,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2022-04-14',
             'harga_sewa_harian' => 23000,
             'harga_sewa_bulanan' => 115000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -67,7 +67,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2023-06-15',
             'harga_sewa_harian' => 25000,
             'harga_sewa_bulanan' => 125000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -81,7 +81,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2021-07-18',
             'harga_sewa_harian' => 27000,
             'harga_sewa_bulanan' => 135000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -95,7 +95,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2022-08-20',
             'harga_sewa_harian' => 28000,
             'harga_sewa_bulanan' => 140000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -109,7 +109,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2020-09-21',
             'harga_sewa_harian' => 21000,
             'harga_sewa_bulanan' => 105000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -123,7 +123,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2019-10-23',
             'harga_sewa_harian' => 24000,
             'harga_sewa_bulanan' => 120000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -137,7 +137,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2022-11-24',
             'harga_sewa_harian' => 30000,
             'harga_sewa_bulanan' => 150000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -151,7 +151,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2021-12-25',
             'harga_sewa_harian' => 19000,
             'harga_sewa_bulanan' => 95000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -165,7 +165,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2022-01-27',
             'harga_sewa_harian' => 32000,
             'harga_sewa_bulanan' => 160000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -179,7 +179,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2022-02-28',
             'harga_sewa_harian' => 34000,
             'harga_sewa_bulanan' => 170000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -193,7 +193,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2019-03-30',
             'harga_sewa_harian' => 35000,
             'harga_sewa_bulanan' => 175000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -207,7 +207,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2020-04-01',
             'harga_sewa_harian' => 36000,
             'harga_sewa_bulanan' => 180000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -221,7 +221,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2021-05-04',
             'harga_sewa_harian' => 17000,
             'harga_sewa_bulanan' => 85000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -235,7 +235,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2022-06-06',
             'harga_sewa_harian' => 25000,
             'harga_sewa_bulanan' => 125000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -249,7 +249,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2023-07-07',
             'harga_sewa_harian' => 20000,
             'harga_sewa_bulanan' => 100000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -263,7 +263,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2020-08-09',
             'harga_sewa_harian' => 27000,
             'harga_sewa_bulanan' => 135000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -277,7 +277,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2019-09-11',
             'harga_sewa_harian' => 18000,
             'harga_sewa_bulanan' => 90000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
 
         MasterMotor::create([
@@ -291,7 +291,7 @@ class MasterMotorSeeder extends Seeder
             'tanggal_pembelian' => '2022-10-12',
             'harga_sewa_harian' => 26000,
             'harga_sewa_bulanan' => 130000,
-            'status' => 1
+            'status' => 1, 'modal_awal_motor' => rand(2000000, 4000000)
         ]);
     }
 }

@@ -51,6 +51,9 @@ class ModulePenyewaanController extends Controller
                 $infoButton = "<a href='" . url('module-penyewaan/module-sewa/' . $model->id . '/info') . "' class='btn  btn-primary d-inline-block'><i class='fas fa-info'></i></a>";
                 $editButton = "&nbsp;<a href='" . url('module-penyewaan/module-sewa/' . $model->id . '/edit') . "' class='btn  btn-warning d-inline-block'><i class='fas fa-edit'></i></a>";
                 $deleteButton = "&nbsp;<a href='#' class='btn  btn-danger d-inline-block'><i class='fas fa-trash'></i></a>";
+                if($model->status == 0){
+                    return $infoButton;
+                }
                 return $infoButton . $editButton;
             })
             ->rawColumns(['status', 'action'])

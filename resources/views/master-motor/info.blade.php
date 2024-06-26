@@ -30,7 +30,8 @@
             <div class="col-9">
                 <div class="card">
                     <div class="card-header">
-                        <a href='{{ url('master-data/master-motor/'.$data->id.'/edit')}}' class='btn  btn-warning d-inline-block float-right'><i class='fas fa-edit'></i></a>
+                        <a href='{{ url('master-data/master-motor/' . $data->id . '/edit') }}'
+                            class='btn  btn-warning d-inline-block float-right'><i class='fas fa-edit'></i></a>
                     </div>
                     <div class="card-body">
                         @csrf
@@ -81,6 +82,13 @@
                             <input readonly type="text" name="harga_sewa_bulanan" id="harga_sewa_bulanan"
                                 class="form-control "
                                 value="{{ 'Rp ' . number_format($data->harga_sewa_bulanan, 0, ',', '.') }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label  for="modal_awal_motor">Modal Awal Motor</label>
+                            <input readonly type="text" name="modal_awal_motor" id="modal_awal_motor"
+                                class="form-control my-input" placeholder="Masukkan Modal Awal Motor"
+                                value="{{ 'Rp. ' . number_format($data->modal_awal_motor, 0, ',', '.') }}">
                         </div>
                     </div>
                 </div>

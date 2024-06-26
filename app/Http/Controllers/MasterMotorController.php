@@ -101,7 +101,7 @@ class MasterMotorController extends Controller
 
         try {
 
-            if ($request->hasFile('img_url')) {
+            if ($request->has('img_url')) {
                 $image = $request->file('img_url');
                 $image_name = time() . $request->name .  '.' . $image->getClientOriginalExtension();
                 $destination_path = public_path('motor_images');
@@ -114,22 +114,18 @@ class MasterMotorController extends Controller
                 'nama_pemilik' => $request->input('nama_pemilik'),
                 'tahun_pembuatan' => $request->input('tahun_pembuatan'),
                 'warna_kb' => $request->input('warna_kb'),
-                'img_url' => $image_name,
+                'img_url' => $request->has('img_url') ? $image_name : '',
                 'tanggal_pajak' => $request->input("tanggal_pajak"),
                 'tanggal_pembelian' => $request->input('tanggal_pembelian'),
                 'harga_sewa_harian' => (int) preg_replace('/[^0-9]/', '', $request->input('harga_sewa_harian')),
                 'harga_sewa_bulanan' => (int) preg_replace('/[^0-9]/', '', $request->input('harga_sewa_bulanan')),
+                'modal_awal_motor' => (int) preg_replace('/[^0-9]/', '', $request->input('modal_awal_motor')),
                 'status' => 1,
             ]);
 
             DB::commit();
             return redirect("master-data/master-motor/")->with("success", "Data berhasil ditambahkan!");
         } catch (\Exception $e) {
-
-            $image_path = public_path('motor_images/' . $image_name . '');
-            if (File::exists($image_path)) {
-                File::delete($image_path);
-            }
 
             DB::rollBack();
             return redirect("master-data/master-motor/")->with("error", "Data gagal ditambahkan! " . $e->getMessage());
@@ -152,7 +148,7 @@ class MasterMotorController extends Controller
         DB::beginTransaction();
         try {
             $data = MasterMotor::where('id', $id)->first();
-            if ($request->hasFile('img_url')) {
+            if ($request->has('img_url')) {
                 $image = $request->file('img_url');
                 $image_name = time() . $request->name .  '.' . $image->getClientOriginalExtension();
                 $destination_path = public_path('motor_images');
@@ -169,17 +165,17 @@ class MasterMotorController extends Controller
                 'nama_pemilik' => $request->input('nama_pemilik'),
                 'tahun_pembuatan' => $request->input('tahun_pembuatan'),
                 'warna_kb' => $request->input('warna_kb'),
-                'img_url' => $request->hasFile('img_url') ? $image_name : $data->img_url,
+                'img_url' => $request->has('img_url') ? $image_name : $data->img_url,
                 'tanggal_pajak' => $request->input("tanggal_pajak"),
                 'tanggal_pembelian' => $request->input('tanggal_pembelian'),
                 'harga_sewa_harian' => (int) preg_replace('/[^0-9]/', '', $request->input('harga_sewa_harian')),
                 'harga_sewa_bulanan' => (int) preg_replace('/[^0-9]/', '', $request->input('harga_sewa_bulanan')),
+                'modal_awal_motor' => (int) preg_replace('/[^0-9]/', '', $request->input('modal_awal_motor')),
             ]);
 
             DB::commit();
             return redirect("master-data/master-motor/$id/edit")->with("success", "Data berhasil diubah!");
         } catch (\Exception $e) {
-
             DB::rollBack();
             return redirect("master-data/master-motor/$id/edit")->with("error", "Data gagal ditambahkan! " . $e->getMessage());
         }

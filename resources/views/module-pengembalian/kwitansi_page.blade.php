@@ -45,7 +45,7 @@
             <tr>
                 <td style="width: 150px">Uang Sebanyak</td>
                 <td style="width: 5px;">:</td>
-                <td style="font-weight: bold; background-color: #bcd4eb;">{{ $tot_sewa_terbilang }}</td>
+                <td style="font-weight: bold; background-color: #bcd4eb;">{{ $tot_sewa_terbilang }} Rupiah</td>
                 <td></td>
             </tr>
             <tr>

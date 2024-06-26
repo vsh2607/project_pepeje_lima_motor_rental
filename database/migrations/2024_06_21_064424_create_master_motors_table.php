@@ -25,6 +25,7 @@ class CreateMasterMotorsTable extends Migration
             $table->date('tanggal_pembelian');
             $table->integer('harga_sewa_harian');
             $table->integer('harga_sewa_bulanan');
+            $table->bigInteger('modal_awal_motor');
             $table->integer('status');
             $table->timestamps();
             $table->softDeletes();
