@@ -47,4 +47,8 @@ class ReportHarianController extends Controller
             })
             ->toJson();
     }
+
+    public function printData(Request $request){
+        
+    }
 }

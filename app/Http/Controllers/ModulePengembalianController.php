@@ -33,17 +33,9 @@ class ModulePengembalianController extends Controller
             MasterMotor::where('id', $penyewaan->motor->id)->update(['status' => 1]);
 
 
-            $tanggal_penyewaan = new DateTime($penyewaan->tanggal_penyewaan);
-            $tanggal_hari_ini = new DateTime();
-            $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
-
-            if ($penyewaan->jenis_penyewaan == 'harian') {
-                $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
-                $total_sewa = $interval <= 0 ? $penyewaan->motor->harga_sewa_harian : $penyewaan->motor->harga_sewa_harian * $interval;
-            } else {
-                $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
-                $total_sewa = $interval <= 0 ? $penyewaan->motor->harga_sewa_harian : $penyewaan->motor->harga_sewa_harian * $interval;
-            }
+            $dataDaysIntervalTotalSewa = $penyewaan->getTotalHariHargaSewa($penyewaan);
+            $interval = $dataDaysIntervalTotalSewa['interval_sewa'];
+            $total_sewa = $dataDaysIntervalTotalSewa['harga_sewa'];
 
             LogDebit::addDebit($penyewaan, $total_sewa, $interval);
             $jaminan_file_path = public_path('/jaminan_images/'.$penyewaan->jaminan_img);

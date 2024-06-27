@@ -138,9 +138,6 @@ class ModuleAdministrationController extends Controller
 
             }
 
-
-
-
             $dataLogKm->update([
                 'id_master_motor' => $request->input('id_master_motor'),
                 'total_km' => (int) preg_replace('/[^0-9]/', '', $request->input('total_km'))

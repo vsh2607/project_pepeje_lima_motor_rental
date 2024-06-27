@@ -14,6 +14,7 @@ class ModulePenyewaanController extends Controller
 {
     public function index()
     {
+
         return view('module-penyewaan.index');
     }
 
@@ -29,24 +30,10 @@ class ModulePenyewaanController extends Controller
                 return 'Rp. ' . number_format($model->motor->harga_sewa_bulanan, 0, ',', '.');
             })
             ->addColumn('total_sewa', function ($model) {
-                $tanggal_penyewaan = new DateTime($model->tanggal_penyewaan);
-                if ($model->tanggal_pengembalian != null) {
-                    //Ini kalau sdh kembali
-                    $tanggal_hari_ini = new DateTime($model->tanggal_pengembalian);
-                } else {
-                    $tanggal_hari_ini = new DateTime();
-                }
-                $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
 
-                if ($model->jenis_penyewaan == 'harian') {
-                    $interval = $tanggal_hari_ini->diff($tanggal_penyewaan);
-                    $interval = $interval->days;
-                    $interval <= 0 ? $total_sewa = $model->motor->harga_sewa_harian : $total_sewa = $model->motor->harga_sewa_harian * $interval;
-                } else {
-                    $interval = $tanggal_hari_ini->diff($tanggal_penyewaan);
-                    $interval = $interval->days;
-                    $interval <= 0 ? $total_sewa = $model->motor->harga_sewa_harian : $total_sewa = $model->motor->harga_sewa_harian * $interval;
-                }
+                $dataDaysIntervalTotalSewa = $model->getTotalHariHargaSewa($model);
+                $dataDaysIntervalTotalSewa['interval_sewa'];
+                $total_sewa = $dataDaysIntervalTotalSewa['harga_sewa'];
                 return 'Rp. ' . number_format($total_sewa, 0, ',', '.');
             })
             ->editColumn('status', function ($model) {
@@ -69,26 +56,9 @@ class ModulePenyewaanController extends Controller
     public function viewForm($id)
     {
         $data = ModulePenyewaan::with(['motor'])->where('id', $id)->first();
-
-        $tanggal_penyewaan = new DateTime($data->tanggal_penyewaan);
-        if ($data->tanggal_pengembalian != null) {
-            //Ini kalau sdh kembali
-            $tanggal_hari_ini = new DateTime($data->tanggal_pengembalian);
-        } else {
-            $tanggal_hari_ini = new DateTime();
-        }
-        $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
-
-        if ($data->jenis_penyewaan == 'harian') {
-            $interval = $tanggal_hari_ini->diff($tanggal_penyewaan);
-            $interval = $interval->days;
-            $interval <= 0 ? $total_sewa = $data->motor->harga_sewa_harian : $total_sewa = $data->motor->harga_sewa_harian * $interval;
-        } else {
-            $interval = $tanggal_hari_ini->diff($tanggal_penyewaan);
-            $interval = $interval->days;
-            $interval <= 0 ? $total_sewa = $data->motor->harga_sewa_harian : $total_sewa = $data->motor->harga_sewa_harian * $interval;
-        }
-
+        $dataDaysIntervalTotalSewa = $data->getTotalHariHargaSewa($data);
+        $interval = $dataDaysIntervalTotalSewa['interval_sewa'];
+        $total_sewa = $dataDaysIntervalTotalSewa['harga_sewa'];
         $total_sewa = 'Rp. ' . number_format($total_sewa, 0, ',', '.');
 
         return view('module-penyewaan.info', ['data' => $data, 'total_hari_sewa' => $interval, 'total_biaya_sewa' => $total_sewa]);
@@ -104,24 +74,9 @@ class ModulePenyewaanController extends Controller
     public function editForm($id)
     {
         $data = ModulePenyewaan::with(['motor'])->where('id', $id)->first();
-        $tanggal_penyewaan = new DateTime($data->tanggal_penyewaan);
-        if ($data->tanggal_pengembalian != null) {
-            //Ini kalau sdh kembali
-            $tanggal_hari_ini = new DateTime($data->tanggal_pengembalian);
-        } else {
-            $tanggal_hari_ini = new DateTime();
-        }
-        $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
-
-        if ($data->jenis_penyewaan == 'harian') {
-            $interval = $tanggal_hari_ini->diff($tanggal_penyewaan);
-            $interval = $interval->days;
-            $interval <= 0 ? $total_sewa = $data->motor->harga_sewa_harian : $total_sewa = $data->motor->harga_sewa_harian * $interval;
-        } else {
-            $interval = $tanggal_hari_ini->diff($tanggal_penyewaan);
-            $interval = $interval->days;
-            $interval <= 0 ? $total_sewa = $data->motor->harga_sewa_harian : $total_sewa = $data->motor->harga_sewa_harian * $interval;
-        }
+        $dataDaysIntervalTotalSewa = $data->getTotalHariHargaSewa($data);
+        $interval = $dataDaysIntervalTotalSewa['interval_sewa'];
+        $total_sewa = $dataDaysIntervalTotalSewa['harga_sewa'];
 
         $total_sewa = 'Rp. ' . number_format($total_sewa, 0, ',', '.');
 
@@ -216,7 +171,7 @@ class ModulePenyewaanController extends Controller
             return redirect("module-manajemen/module-sewa/")->with("error", "Data gagal ditambahkan! " . $e->getMessage());
         }
     }
-
+    //Dipakai untuk module pengembalian
     public function dataPenyewaan(Request $request)
     {
         $requestData = $request->all();
@@ -226,17 +181,9 @@ class ModulePenyewaanController extends Controller
                 $query->where('id', $requestData["id_nomor_polisi"]);
             })->where('status', 1)->first();
         }
-        $tanggal_penyewaan = new DateTime($data->tanggal_penyewaan);
-        $tanggal_hari_ini = new DateTime();
-        $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
-
-        if ($data->jenis_penyewaan == 'harian') {
-            $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
-            $total_sewa = $interval <= 0 ? $data->motor->harga_sewa_harian : $data->motor->harga_sewa_harian * $interval;
-        } else {
-            $interval = $tanggal_hari_ini->diff($tanggal_penyewaan)->days;
-            $total_sewa = $interval <= 0 ? $data->motor->harga_sewa_harian : $data->motor->harga_sewa_harian * $interval;
-        }
+        $dataDaysIntervalTotalSewa = $data->getTotalHariHargaSewa($data);
+        $interval = $dataDaysIntervalTotalSewa['interval_sewa'];
+        $total_sewa = $dataDaysIntervalTotalSewa['harga_sewa'];
         $total_sewa = 'Rp. ' . number_format($total_sewa, 0, ',', '.');
         $mergedData = [
             'data' => $data,

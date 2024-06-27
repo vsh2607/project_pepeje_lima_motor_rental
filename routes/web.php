@@ -84,6 +84,7 @@ Route::group(['prefix' => '/module-print', 'middleware' => ['auth']], function (
     Route::prefix('/laporan-sewa-harian')->group(function () {
         Route::get('/', [ReportHarianController::class, 'index']);
         Route::get('/list-data', [ReportHarianController::class, 'listData']);
+        Route::get('/print', [ReportHarianController::class, 'printData']);
 
     });
 

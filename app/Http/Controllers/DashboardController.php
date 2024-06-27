@@ -21,9 +21,6 @@ class DashboardController extends Controller
         $total_credit = 'Rp '. number_format($total_credit, 0, ',', '.');
         $total_deposit = 'Rp '. number_format($total_deposit, 0, ',', '.');
 
-
-
-
         return view('dashboard.index', ['total_motor' => $total_motor, 'total_motor_available' => $total_motor_available, 'total_debit' => $total_debit, 'total_credit'=> $total_credit, 'total_deposit' => $total_deposit]);
     }
 }
