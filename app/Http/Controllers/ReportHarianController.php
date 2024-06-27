@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 
-class ModuleArusUangMasuk extends Controller
+class ReportHarianController extends Controller
 {
     public function index()
     {
-        return view('module-arus-uang-masuk.index');
+        return view('module-report-harian.index');
     }
 
     public function listData(Request $request)
@@ -38,8 +38,12 @@ class ModuleArusUangMasuk extends Controller
             ->editColumn('total_hari_sewa', function($model){
                 return $model->total_hari_sewa . ' hari';
             })
-            ->addColumn('remark', function(){
-                return 'Sewa Motor';
+            ->addColumn('harga_sewa', function($model){
+                if($model->penyewaan->jenis_penyewaan == 'harian'){
+                    return number_format($model->penyewaan->motor->harga_sewa_harian, 0, ',', '.');
+                }
+                return number_format($model->penyewaan->motor->harga_sewa_bulanan, 0, ',', '.');
+
             })
             ->toJson();
     }

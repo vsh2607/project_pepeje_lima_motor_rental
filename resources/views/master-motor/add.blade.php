@@ -17,7 +17,16 @@
 @stop
 
 @section('content')
-
+    @if (session('error'))
+        <div class="alert alert-danger mb-2">
+            {{ session('error') }}
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success mb-2">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="container-fluid" style="margin-top:20px; text-transform: uppercase;">
         <form method="POST" enctype="multipart/form-data">
             <div class="card">
@@ -32,6 +41,9 @@
                         <label class='required' for="nomor_polisi">Nomor Polisi</label>
                         <input required type="text" name="nomor_polisi" id="nomor_polisi" class="form-control my-input"
                             placeholder="Masukkan Nomor Polisi">
+                        @error('nomor_polisi')
+                            <div style="color: red;">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label class='required' for="nama_pemilik">Nama Pemilik</label>
@@ -74,11 +86,23 @@
                         <input required type="text" name="modal_awal_motor" id="modal_awal_motor"
                             class="form-control my-input" placeholder="Masukkan Modal Awal Motor">
                     </div>
+
+                    <div class="form-group">
+                        <label for="total_km" class="required">Total KM</label>
+                        <input type="text" class="my-input form-control" id="total_km" name="total_km"
+                            placeholder="Masukkan KM Motor Awal">
+                    </div>
+
                     <div class="form-group">
                         <label for="img_url">Upload Gambar Kendaraan</label>
                         <input type="file" name="img_url" id="img_url" class="form-control"
                             placeholder="Upload Gambar Kendaraan">
+                        @error('img_url')
+                            <div style="color: red;">{{ $message }}</div>
+                        @enderror
+
                     </div>
+
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">SUBMIT</button>
@@ -118,8 +142,15 @@
             formatInputPriceValue("#harga_sewa_bulanan");
         });
 
-        $('#modal_awal_motor').on('input', function(){
+        $('#modal_awal_motor').on('input', function() {
             formatInputPriceValue("#modal_awal_motor");
         })
+
+        $('#total_km').on('input', function() {
+            let value = $(this).val();
+            value = value.replace(/\D/g, '');
+            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            $(this).val(value);
+        });
     </script>
 @stop

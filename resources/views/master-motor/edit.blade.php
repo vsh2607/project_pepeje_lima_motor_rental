@@ -58,6 +58,9 @@
                                 <input required type="text" name="nomor_polisi" id="nomor_polisi"
                                     class="form-control my-input" placeholder="Masukkan Nomor Polisi"
                                     value="{{ $data->nomor_polisi }}">
+                                @error('nomor_polisi')
+                                    <div style="color: red;">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label class='required' for="nama_pemilik">Nama Pemilik</label>
@@ -106,10 +109,15 @@
                                     class="form-control my-input" placeholder="Masukkan Modal Awal Motor"
                                     value="{{ 'Rp. ' . number_format($data->modal_awal_motor, 0, ',', '.') }}">
                             </div>
+
                             <div class="form-group">
                                 <label for="img_url">Upload Gambar Kendaraan</label>
                                 <input type="file" name="img_url" id="img_url" class="form-control"
                                     placeholder="Upload Gambar Kendaraan">
+                                @error('img_url')
+                                    <div style="color: red;">{{ $message }}</div>
+                                @enderror
+
                             </div>
                         </div>
                         <div class="card-footer">

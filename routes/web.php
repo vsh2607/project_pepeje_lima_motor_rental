@@ -2,12 +2,11 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ModuleArusUangMasuk;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\ModuleArusUangKeluar;
 use App\Http\Controllers\MasterMotorController;
+use App\Http\Controllers\ModuleAdministrationController;
+use App\Http\Controllers\ReportHarianController;
 use App\Http\Controllers\ModulePenyewaanController;
 use App\Http\Controllers\ModulePengembalianController;
 
@@ -68,27 +67,26 @@ Route::group(['prefix' => '/module-manajemen', 'middleware' => ['auth']], functi
         Route::post('/add', [ModulePengembalianController::class, 'addData']);
         Route::get('{id}/return', [ModulePengembalianController::class, 'returnMotor']);
     });
+
+    Route::prefix('/module-administrasi-motor')->group(function () {
+        Route::get('/', [ModuleAdministrationController::class, 'index']);
+        Route::get('/list-data', [ModuleAdministrationController::class, 'listData']);
+        Route::get('{id}/info', [ModuleAdministrationController::class, 'viewForm']);
+        Route::get('{id}/edit', [ModuleAdministrationController::class, 'editForm']);
+        Route::post('{id}/edit', [ModuleAdministrationController::class, 'updateData']);
+        Route::get('/add', [ModuleAdministrationController::class, 'addForm']);
+        Route::post('/add', [ModuleAdministrationController::class, 'addData']);
+
+    });
 });
 
-Route::group(['prefix' => '/module-arus-uang', 'middleware' => ['auth']], function () {
-    Route::prefix('/module-arus-uang-masuk')->group(function () {
-        Route::get('/', [ModuleArusUangMasuk::class, 'index']);
-        Route::get('/list-data', [ModuleArusUangMasuk::class, 'listData']);
-        // Route::get('{id}/info', [ModulePenyewaanController::class, 'viewForm']);
-        // Route::get('{id}/edit', [ModulePenyewaanController::class, 'editForm']);
-        // Route::post('{id}/edit', [ModulePenyewaanController::class, 'updateData']);
-        // Route::get('/add', [ModulePenyewaanController::class, 'addForm']);
-        // Route::post('/add', [ModulePenyewaanController::class, 'addData']);
+Route::group(['prefix' => '/module-print', 'middleware' => ['auth']], function () {
+    Route::prefix('/laporan-sewa-harian')->group(function () {
+        Route::get('/', [ReportHarianController::class, 'index']);
+        Route::get('/list-data', [ReportHarianController::class, 'listData']);
+
     });
-    Route::prefix('/module-arus-uang-keluar')->group(function () {
-        Route::get('/', [ModuleArusUangKeluar::class, 'index']);
-        Route::get('/list-data', [ModuleArusUangKeluar::class, 'listData']);
-        // Route::get('{id}/info', [ModulePenyewaanController::class, 'viewForm']);
-        // Route::get('{id}/edit', [ModulePenyewaanController::class, 'editForm']);
-        // Route::post('{id}/edit', [ModulePenyewaanController::class, 'updateData']);
-        // Route::get('/add', [ModulePenyewaanController::class, 'addForm']);
-        // Route::post('/add', [ModulePenyewaanController::class, 'addData']);
-    });
+
 });
 
 Route::group(['prefix' => '/resources', 'middleware' => ['auth']], function () {

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Module Arus Uang Masuk')
+@section('title', 'List Administrasi Motor')
 
 @section('adminlte_css_pre')
     <link rel="icon" href="{{ asset('assets/logo.png') }}" type="image/x-icon">
@@ -14,7 +14,7 @@
 @endsection
 
 @section('content_header')
-    <h1>Module Arus Uang Masuk</h1>
+    <h1>List Administrasi Motor</h1>
 @stop
 
 @section('content')
@@ -31,6 +31,10 @@
     <div class="container-fluid" style="margin-top:20px; text-transform: uppercase;">
         <div class="card">
             <div class="card-header">
+                <a href="{{ url('/module-manajemen/module-administrasi-motor/add') }}" class="btn btn-success float-right">+
+                    Tambah</a>
+            </div>
+            <div class="card-header">
                 <div class="row">
                     <div class="col-lg-1 col-sm-12">
                         <p class='required'>Nama Motor</p>
@@ -39,14 +43,13 @@
                         <select name="filter_by_name" id="filter_by_name" class="form-control">
                             <option value="all" selected>Semua Motor</option>
                         </select>
-
                     </div>
                     <div class="col-lg-1 col-sm-12">
                         <p class="required">Tanggal Awal</p>
                     </div>
                     <div class="col-lg-2 col-sm-12">
                         <input type="text" class="form-control" id="filter_by_date_start" name="filter_by_date_start"
-                            value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                            value="{{ \Carbon\Carbon::now()->firstOfMonth()->format('Y-m-d') }}">
                     </div>
                     <div class="col-lg-1 col-sm-12">
                         <p class="required">Tanggal Akhir</p>
@@ -66,31 +69,28 @@
                     <thead>
                         <tr>
                             <th style="width: 10px">NO</th>
-                            <th style="width: 20px">Nama Motor</th>
-                            <th style="width: 20px">Nama Penyewa</th>
-                            <th style="width: 20px">NO. Polisi</th>
-                            <th style="width: 20px">Tanggal Mulai Sewa</th>
-                            <th style="width: 20px">Tanggal Sekarang</th>
-                            <th style="width: 20px">Jumlah Hari</th>
-                            <th style="width: 20px">Jumlah Pemasukan</th>
-                            <th style="width: 20px">Keterangan</th>
+                            <th>Nama Motor</th>
+                            <th>Tanggal Pengeluaran</th>
+                            <th>Total Pengeluaran</th>
+                            <th>Keterangan</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
-
                     <tfoot>
-                        <th colspan="7">Total </th>
-                        <th></th>
-                        <th></th>
+                        <tr>
+                            <th colspan="3">Total</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
     </div>
-
 @stop
 
 @section('plugins.Datatables', true)
-@section('plugins.FlatPickr', true)
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
@@ -138,10 +138,13 @@
             $('#list_table').DataTable({
                 processing: true,
                 serverSide: true,
-                paging: false,
+                "lengthMenu": [
+                    [100, 250, 500, 1000],
+                    [100, 250, 500, 1000]
+                ],
                 info: false,
                 ajax: {
-                    url: "{{ url('/module-arus-uang/module-arus-uang-masuk/list-data') }}",
+                    url: "{{ url('/module-manajemen/module-administrasi-motor/list-data') }}",
                     data: function(d) {
                         d.name = $("#filter_by_name").val();
                         d.date_start = $("#filter_by_date_start").val();
@@ -153,7 +156,7 @@
                     "visible": true,
                     "searchable": false,
                     "orderable": false,
-                }, ],
+                }],
                 columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
@@ -161,44 +164,32 @@
                         }
                     },
                     {
-                        data: 'penyewaan.motor.name',
-                        name: 'penyewaan.motor.name'
+                        data: 'motor.name',
+                        name: 'motor.name'
                     },
                     {
-                        data: 'penyewaan.nama_penyewa',
-                        name: 'penyewaan.nama_penyewa'
+                        data: 'credit_date',
+                        name: 'credit_date'
                     },
                     {
-                        data: 'penyewaan.motor.nomor_polisi',
-                        name: 'penyewaan.motor.nomor_polisi'
-                    },
-                    {
-                        data: 'penyewaan.tanggal_penyewaan',
-                        name: 'penyewaan.tanggal_penyewaan'
-                    },
-                    {
-                        data: 'penyewaan.tanggal_pengembalian',
-                        name: 'penyewaan.tanggal_pengembalian'
-                    },
-                    {
-                        data: 'total_hari_sewa',
-                        name: 'total_hari_sewa'
-                    },
-                    {
-                        data: 'debit',
-                        name: 'debit'
+                        data: 'credit',
+                        name: 'credit'
                     },
                     {
                         data: 'remark',
                         name: 'remark'
                     },
-
+                    {
+                        data: 'action',
+                        name: 'action'
+                    },
                 ],
+
+
                 footerCallback: function(row, data, start, end, display) {
                     var api = this.api();
-
-                    var totalDebit = api
-                        .column(7, {
+                    var total = api
+                        .column(3, {
                             page: 'current'
                         })
                         .data()
@@ -207,14 +198,14 @@
                             return sum + parseFloat(cleanValue);
                         }, 0);
 
-                    var formattedTotal = totalDebit.toLocaleString('id-ID', {
+
+                    var formattedTotal = total.toLocaleString('id-ID', {
                         minimumFractionDigits: 0
                     });
 
-                    $(api.column(7).footer()).html(formattedTotal);
+                    $(api.column(3).footer()).html(formattedTotal);
                 }
-
             });
-        })
+        });
     </script>
 @stop

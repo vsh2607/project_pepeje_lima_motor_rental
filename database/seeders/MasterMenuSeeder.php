@@ -46,15 +46,13 @@ class MasterMenuSeeder extends Seeder
 
         MasterMenu::create([
             'level' => 0,
-            'title' => ' Module Arus Uang',
-            'code' => 'module-arus-uang',
+            'title' => ' Module Cetak Laporan',
+            'code' => 'module-print',
             'is_dropdown' => 1,
             'is_hidden' => 0,
             'priority' => 3,
-            'icon' => 'fa fa-shopping-cart'
+            'icon' => 'fa fa-print'
         ]);
-
-
 
         MasterMenu::create([
             'level' => 2,
@@ -106,21 +104,13 @@ class MasterMenuSeeder extends Seeder
 
         MasterMenu::create([
             'level' => 4,
-            'title' => 'Arus Uang Masuk',
-            'code' => 'module-arus-uang-masuk',
+            'title' => 'Lap. Sewa Harian',
+            'code' => 'laporan-sewa-harian',
             'is_dropdown' => 0,
             'is_hidden' => 0,
             'priority' => 0,
             'icon' => ''
         ]);
-        MasterMenu::create([
-            'level' => 4,
-            'title' => 'Arus Uang Keluar',
-            'code' => 'module-arus-uang-keluar',
-            'is_dropdown' => 0,
-            'is_hidden' => 0,
-            'priority' => 1,
-            'icon' => ''
-        ]);
+
     }
 }

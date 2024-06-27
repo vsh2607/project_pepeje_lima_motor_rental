@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLogCreditsTable extends Migration
+class CreateLogKmsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateLogCreditsTable extends Migration
      */
     public function up()
     {
-        Schema::create('log_credits', function (Blueprint $table) {
+        Schema::create('log_kms', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('id_master_motor');
-            $table->bigInteger('credit');
-            $table->date('credit_date');
-            $table->bigInteger('total_credit');
-            $table->text('remark');
+            $table->bigInteger('id_log_target');
+            $table->string('type');
+            $table->bigInteger('total_km');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -32,6 +31,6 @@ class CreateLogCreditsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('log_credits');
+        Schema::dropIfExists('log_kms');
     }
 }

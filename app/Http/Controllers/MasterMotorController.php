@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\LogCredit;
+use App\Models\LogKm;
 use App\Models\MasterMotor;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -97,6 +98,7 @@ class MasterMotorController extends Controller
     public function addData(Request $request)
     {
 
+
         $request->validate(
             [
                 'nomor_polisi' => 'required|unique:master_motors',
@@ -111,14 +113,16 @@ class MasterMotorController extends Controller
 
         try {
 
+
             if ($request->has('img_url')) {
                 $image = $request->file('img_url');
                 $image_name = time() . $request->name .  '.' . $image->getClientOriginalExtension();
                 $destination_path = public_path('motor_images');
                 $image->move($destination_path, $image_name);
             }
+            $modal_awal_motor = (int) preg_replace('/[^0-9]/', '', $request->input('modal_awal_motor'));
 
-            MasterMotor::create([
+            $dataMotor = MasterMotor::create([
                 'name' => $request->input('name'),
                 'nomor_polisi' => $request->input('nomor_polisi'),
                 'nama_pemilik' => $request->input('nama_pemilik'),
@@ -129,14 +133,30 @@ class MasterMotorController extends Controller
                 'tanggal_pembelian' => $request->input('tanggal_pembelian'),
                 'harga_sewa_harian' => (int) preg_replace('/[^0-9]/', '', $request->input('harga_sewa_harian')),
                 'harga_sewa_bulanan' => (int) preg_replace('/[^0-9]/', '', $request->input('harga_sewa_bulanan')),
-                'modal_awal_motor' => (int) preg_replace('/[^0-9]/', '', $request->input('modal_awal_motor')),
+                'modal_awal_motor' => $modal_awal_motor,
                 'status' => 1,
+            ]);
+
+
+            $logCredit = LogCredit::create([
+                'id_master_motor' => $dataMotor->id,
+                'credit' => $modal_awal_motor,
+                'total_credit' => LogCredit::totalCredit() + $modal_awal_motor,
+                'credit_date' => $request->input('tanggal_pembelian'),
+                'remark' => 'BELI AWAL MOTOR'
+            ]);
+
+            LogKm::create([
+                'id_master_motor' => $dataMotor->id,
+                'id_log_target' => $logCredit->id,
+                'type' => 'credit',
+                'total_km' => (int) preg_replace('/[^0-9]/', '', $request->input('total_km'))
             ]);
 
             DB::commit();
             return redirect("master-data/master-motor/")->with("success", "Data berhasil ditambahkan!");
         } catch (\Exception $e) {
-
+            dd($e);
             DB::rollBack();
             return redirect("master-data/master-motor/")->with("error", "Data gagal ditambahkan! " . $e->getMessage());
         }
@@ -169,6 +189,8 @@ class MasterMotorController extends Controller
                     File::delete($image_path);
                 }
             }
+
+            $total = (int) preg_replace('/[^0-9]/', '', $request->input('modal_awal_motor'));
             $data->update([
                 'name' => $request->input('name'),
                 'nomor_polisi' => $request->input('nomor_polisi'),
@@ -180,7 +202,13 @@ class MasterMotorController extends Controller
                 'tanggal_pembelian' => $request->input('tanggal_pembelian'),
                 'harga_sewa_harian' => (int) preg_replace('/[^0-9]/', '', $request->input('harga_sewa_harian')),
                 'harga_sewa_bulanan' => (int) preg_replace('/[^0-9]/', '', $request->input('harga_sewa_bulanan')),
-                'modal_awal_motor' => (int) preg_replace('/[^0-9]/', '', $request->input('modal_awal_motor')),
+                'modal_awal_motor' => $total,
+            ]);
+
+            $dataLogCredit = LogCredit::where('id_master_motor', $data->id)->where('remark', 'BELI AWAL MOTOR')->first();
+            $dataLogCredit->update([
+                'credit' => $total,
+                'total_credit' => LogCredit::totalCredit() - $dataLogCredit->credit + $total,
             ]);
 
             DB::commit();

@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             MasterUserSeeder::class,
             MasterUserTypeSeeder::class,
             MasterMenuSeeder::class,
-            MasterMotorSeeder::class,
+            // MasterMotorSeeder::class,
         ]);
 
     }
