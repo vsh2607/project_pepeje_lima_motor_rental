@@ -31,10 +31,6 @@
     <div class="container-fluid" style="margin-top:20px; text-transform: uppercase;">
         <div class="card">
             <div class="card-header">
-                <a href="{{ url('/module-manajemen/module-administrasi-motor/add') }}" class="btn btn-success float-right">+
-                    Tambah</a>
-            </div>
-            <div class="card-header">
                 <div class="row">
                     <div class="col-lg-1 col-sm-12">
                         <p class='required'>Nama Motor</p>
@@ -63,6 +59,12 @@
                         <button class="btn btn-reset btn-secondary">Reset</button>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <a href="{{ url('/module-manajemen/module-administrasi-motor/add') }}" class="btn btn-success float-right">+
+                    Tambah</a>
             </div>
             <div class="card-body">
                 <table class="table table-stripped" id="list_table">

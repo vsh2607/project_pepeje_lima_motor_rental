@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DateTime;
 use App\Models\LogDebit;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Yajra\DataTables\DataTables;
 
 
@@ -49,6 +50,12 @@ class ReportHarianController extends Controller
     }
 
     public function printData(Request $request){
-        
+
+        $data = [
+            'testing' => 'Halo'
+        ];
+        $pdf = Pdf::loadView('module-report-harian.print', $data);
+        $pdf_name = 'testing.pdf';
+        return $pdf->stream($pdf_name);
     }
 }

@@ -74,6 +74,7 @@
                                     <option value="KTP">KTP</option>
                                     <option value="KTM">KTM</option>
                                     <option value="SIM">SIM</option>
+                                    <option value="LAINNYA">LAINNYA</option>
                                 </select>
                                 <input hidden type="text" id="jaminan_img" name="jaminan_img">
                             </div>

@@ -61,6 +61,16 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="card">
+
+            <div class="card-header">
+                <div class="float-right">
+                    <a href="#" class="btn btn-danger btn-print-pdf"><i class="fa fa-print"></i></a>
+                    {{-- <button class="btn btn-danger btn-print-pdf"><i class="fa fa-print"></i></button> --}}
+                </div>
+
+            </div>
             <div class="card-body">
                 <table class="table table-stripped" id="list_table">
                     <thead>
@@ -135,6 +145,17 @@
             $('#filter_by_date_end').val('{{ \Carbon\Carbon::now()->format('Y-m-d') }}');
             $('#list_table').DataTable().ajax.reload();
         });
+
+
+        $('.btn-print-pdf').on('click', function(){
+            let name = $('#filter_by_name').val();
+            let date_start = $('#filter_by_date_start').val();
+            let date_end = $('#filter_by_date_end').val();
+            let url = `/module-print/laporan-sewa-harian/print?name=${encodeURIComponent(name)}&dateStart=${encodeURIComponent(date_start)}&dateEnd=${encodeURIComponent(date_end)}`;
+            window.open(url, '_blank');
+        });
+
+
 
         $(document).ready(function() {
             $('#list_table').DataTable({

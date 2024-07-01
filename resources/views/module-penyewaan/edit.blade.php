@@ -95,6 +95,8 @@
                                     <option value="KTP" {{ $data->jaminan == 'KTP' ? 'selected' : '' }}>KTP</option>
                                     <option value="KTM" {{ $data->jaminan == 'KTM' ? 'selected' : '' }}>KTM</option>
                                     <option value="SIM" {{ $data->jaminan == 'SIM' ? 'selected' : '' }}>SIM</option>
+                                    <option value="LAINNYA" {{ $data->jaminan == 'LAINNYA' ? 'selected' : '' }}>SIM</option>
+
                                 </select>
                                 <input hidden type="text" id="jaminan_img" name="jaminan_img">
                             </div>
