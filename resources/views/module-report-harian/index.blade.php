@@ -67,7 +67,6 @@
             <div class="card-header">
                 <div class="float-right">
                     <a href="#" class="btn btn-danger btn-print-pdf"><i class="fa fa-print"></i></a>
-                    {{-- <button class="btn btn-danger btn-print-pdf"><i class="fa fa-print"></i></button> --}}
                 </div>
 
             </div>
@@ -81,7 +80,7 @@
                             <th style="width: 20px">No. Kontak</th>
                             <th style="width: 20px">NO. Polisi</th>
                             <th style="width: 20px">Tanggal Mulai Sewa</th>
-                            <th style="width: 20px">Tanggal Sekarang</th>
+                            <th style="width: 20px">Tanggal Akhir Sewa</th>
                             <th style="width: 20px">Jumlah Hari</th>
                             <th style="width: 20px">Harga Sewa</th>
                             <th style="width: 20px">Total Sewa</th>
