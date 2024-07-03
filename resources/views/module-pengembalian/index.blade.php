@@ -5,6 +5,12 @@
 @section('adminlte_css_pre')
     <link rel="icon" href="{{ asset('assets/logo.png') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .required::after {
+            content: '*';
+            color: red;
+        }
+    </style>
 
 @endsection
 
@@ -70,19 +76,19 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label class='required' for="id_master_motor">Nama Kendaraan</label>
+                                    <label for="id_master_motor">Nama Kendaraan</label>
                                     <input type="text" name="id_master_motor" id="id_master_motor" class="form-control"
                                         readonly>
                                     <input hidden type="text" id="penyewaan_id" name="penyewaan_id">
                                 </div>
                                 <div class="form-group">
-                                    <label class='required' for="nomor_polisi_input">Nomor Polisi</label>
+                                    <label for="nomor_polisi_input">Nomor Polisi</label>
                                     <input type="text" required readonly name="nomor_polisi_input"
                                         id="nomor_polisi_input" class="form-control my-input">
                                     <input hidden type="text" id="motor_name" name="motor_name">
                                 </div>
                                 <div class="form-group">
-                                    <label class='required' for="nama_penyewa">Nama Penyewa</label>
+                                    <label for="nama_penyewa">Nama Penyewa</label>
                                     <input readonly type="text" class="form-control my-input" name="nama_penyewa"
                                         id="nama_penyewa" required placeholder="MASUKKAN NAMA PENYEWA">
                                 </div>
@@ -91,16 +97,21 @@
                                     <input type="text" name="jaminan" id="jaminan" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label class='required' for="jenis_penyewaan">Jenis Penyewaan</label>
+                                    <label for="jenis_penyewaan">Jenis Penyewaan</label>
                                     <input type="text" name="jenis_penyewaan" id="jenis_penyewaan" class="form-control"
                                         readonly>
 
                                 </div>
 
                                 <div class="form-group">
-                                    <label class='required' for="tanggal_penyewaan">Tanggal Penyewaan</label>
+                                    <label for="tanggal_penyewaan">Tanggal Penyewaan</label>
                                     <input required readonly type="text" name="tanggal_penyewaan" id="tanggal_penyewaan"
                                         class="form-control my-input" placeholder="MASUKKAN TANGGAL PENYEWAAN">
+                                </div>
+                                <div class="form-group">
+                                    <label class="required" for="total_km" class="required">Total KM</label>
+                                    <input required type="text" class="my-input form-control" id="total_km"
+                                        name="total_km" placeholder="MASUKKAN KM MOTOR SAAT INI">
                                 </div>
                             </div>
 
@@ -127,7 +138,15 @@
         $(document).ready(function() {
 
             $('.btn-return').on('click', function() {
-                var htmlContent = `
+                if ($("#total_km").val() == '') {
+                    Swal.fire({
+                        title: "Perhatian",
+                        text: 'Pastikan Total KM Telah Diisi',
+                        icon: "warning",
+                        reverseButtons: true
+                    })
+                } else {
+                    let htmlContent = `
         <div style="text-align: center;">
             <table style="display: inline-block; text-align: left;">
                 <tr>
@@ -162,37 +181,50 @@
                     <td>&nbsp;${$('.total_biaya').text()}</td>
 
                 </tr>
+                <tr>
+                    <td><b>Total KM Saat Ini</b></td>
+                    <td>:</td>
+                    <td>&nbsp;${$('#total_km').val()} Km</td>
+
+                </tr>
             </table>
         </div>
     `;
-
-                Swal.fire({
-                    title: "Konfirmasi Pengembalian",
-                    html: htmlContent,
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#999999",
-                    confirmButtonText: "Iya, Kembalikan",
-                    cancelButtonText: "Batal",
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        var penyewaanId = $('#penyewaan_id').val();
-                        var url = `{{ url('module-manajemen/module-kembali/${penyewaanId}/return') }}`;
-                        window.open(url, '_blank');
-                        location.reload();
-                    }
-                });
+                    Swal.fire({
+                        title: "Konfirmasi Pengembalian",
+                        html: htmlContent,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#999999",
+                        confirmButtonText: "Iya, Kembalikan",
+                        cancelButtonText: "Batal",
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            let penyewaanId = $('#penyewaan_id').val();
+                            let totalKm = parseInt($('#total_km').val().replace(/\./g, ''), 10);
+                            let url =
+                                `{{ url('module-manajemen/module-kembali/${penyewaanId}/return?km=${encodeURIComponent(totalKm)}') }}`;
+                            window.open(url, '_blank');
+                            location.reload();
+                        }
+                    });
+                }
             });
-
-
             $('.reset').on('click', function() {
                 $('.detail-card').css('display', 'none');
                 $('#nomor_polisi').val('').trigger('change');
 
                 $("#motor_img").attr('src', ``)
                 $("#jaminan_img").attr('src', ``)
+            });
+
+            $('#total_km').on('input', function() {
+                let value = $(this).val();
+                value = value.replace(/\D/g, '');
+                value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                $(this).val(value);
             });
 
             $('.filter').on('click', function() {
@@ -205,7 +237,6 @@
                             id_nomor_polisi: id_nomor_polisi
                         },
                         success: function(data) {
-                            console.log(data);
 
                             $("#motor_img").attr('src',
                                 `{{ asset('motor_images/${data.data.motor.img_url}') }}`)
@@ -234,7 +265,7 @@
                 ajax: {
                     url: "{{ url('resources/list-motor-sewa') }}",
                     data: function(params) {
-                        var query = {
+                        let query = {
                             name: params.term,
                             type: 'nomor_polisi'
                         };
@@ -243,7 +274,7 @@
                     dataType: 'json',
                     delay: 250,
                     processResults: function(data) {
-                        var processedData = $.map(data, function(obj) {
+                        let processedData = $.map(data, function(obj) {
                             obj.id = obj.id;
                             obj.text = obj.nomor_polisi;
 

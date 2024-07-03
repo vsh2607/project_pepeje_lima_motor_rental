@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DateTime;
+use App\Models\LogKm;
 use App\Models\LogDebit;
 use App\Models\MasterMotor;
 use Illuminate\Http\Request;
@@ -19,8 +20,9 @@ class ModulePengembalianController extends Controller
         return view('module-pengembalian.index');
     }
 
-    public function returnMotor($id)
+    public function returnMotor(Request $request, $id)
     {
+        $total_km = $request->km;
         DB::beginTransaction();
         try {
             $penyewaan = ModulePenyewaan::with(['motor'])->where('id', $id)->first();
@@ -37,11 +39,21 @@ class ModulePengembalianController extends Controller
             $interval = $dataDaysIntervalTotalSewa['interval_sewa'];
             $total_sewa = $dataDaysIntervalTotalSewa['harga_sewa'];
 
-            LogDebit::addDebit($penyewaan, $total_sewa, $interval);
+            $logDebit = LogDebit::addDebit($penyewaan, $total_sewa, $interval);
+
+            LogKm::create([
+                'id_master_motor' => $penyewaan->motor->id,
+                'id_log_target' => $logDebit->id,
+                'type' => 'debit',
+                'total_km' => $total_km
+            ]);
+
+
             $jaminan_file_path = public_path('/jaminan_images/'.$penyewaan->jaminan_img);
             if(File::exists($jaminan_file_path)){
                 File::delete($jaminan_file_path);
             }
+
 
             $total_sewa_terbilang = $this->numberToWords($total_sewa);
             $total_sewa = 'Rp. ' . number_format($total_sewa, 0, ',', '.');

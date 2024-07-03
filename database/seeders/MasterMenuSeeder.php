@@ -112,5 +112,15 @@ class MasterMenuSeeder extends Seeder
             'icon' => ''
         ]);
 
+        MasterMenu::create([
+            'level' => 4,
+            'title' => 'Lap. Keuangan Kendaran',
+            'code' => 'laporan-keuangan-kendaraan',
+            'is_dropdown' => 0,
+            'is_hidden' => 0,
+            'priority' => 0,
+            'icon' => ''
+        ]);
+
     }
 }

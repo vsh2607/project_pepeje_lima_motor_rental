@@ -9,6 +9,7 @@ use App\Http\Controllers\ModuleAdministrationController;
 use App\Http\Controllers\ReportHarianController;
 use App\Http\Controllers\ModulePenyewaanController;
 use App\Http\Controllers\ModulePengembalianController;
+use App\Http\Controllers\ReportEachMotorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,7 +86,12 @@ Route::group(['prefix' => '/module-print', 'middleware' => ['auth']], function (
         Route::get('/', [ReportHarianController::class, 'index']);
         Route::get('/list-data', [ReportHarianController::class, 'listData']);
         Route::get('/print', [ReportHarianController::class, 'printData']);
+    });
 
+    Route::prefix('/laporan-keuangan-kendaraan')->group(function () {
+        Route::get('/', [ReportEachMotorController::class, 'index']);
+        Route::get('/list-data', [ReportEachMotorController::class, 'listData']);
+        Route::get('/print', [ReportEachMotorController::class, 'printData']);
     });
 
 });

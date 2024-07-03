@@ -91,9 +91,9 @@
                         @php
                             $harga_sewa = 0;
                             if ($item->penyewaan->jenis_penyewaan == 'harian') {
-                                $harga_sewa = number_format($item->penyewaan->motor->harga_sewa_harian, 0, ',', '.');
+                                $harga_sewa = number_format($item->penyewaan->motor->harga_sewa_harian, 0, ',', '.') . ' ('.$item->penyewaan->jenis_penyewaan.')';
                             }
-                            $harga_sewa = number_format($item->penyewaan->motor->harga_sewa_bulanan, 0, ',', '.');
+                            $harga_sewa = number_format($item->penyewaan->motor->harga_sewa_bulanan, 0, ',', '.') . ' ('.$item->penyewaan->jenis_penyewaan.')';
                         @endphp
                         {{ $harga_sewa }}
                     </td>

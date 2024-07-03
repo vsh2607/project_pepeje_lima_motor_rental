@@ -41,9 +41,9 @@ class ReportHarianController extends Controller
             })
             ->addColumn('harga_sewa', function ($model) {
                 if ($model->penyewaan->jenis_penyewaan == 'harian') {
-                    return number_format($model->penyewaan->motor->harga_sewa_harian, 0, ',', '.');
+                    return number_format($model->penyewaan->motor->harga_sewa_harian, 0, ',', '.') . ' ('.$model->penyewaan->jenis_penyewaan.')';
                 }
-                return number_format($model->penyewaan->motor->harga_sewa_bulanan, 0, ',', '.');
+                return number_format($model->penyewaan->motor->harga_sewa_bulanan, 0, ',', '.') . ' ('.$model->penyewaan->jenis_penyewaan.')';
             })
             ->toJson();
     }

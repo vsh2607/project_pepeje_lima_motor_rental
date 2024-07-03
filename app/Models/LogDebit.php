@@ -22,10 +22,9 @@ class LogDebit extends Model
 
     static public function addDebit($penyewaan, $total_sewa, $total_hari_sewa)
     {
-
-
+        $logDebit = null;
         if (LogDebit::where('id_module_penyewaan', $penyewaan->id)->first() == null) {
-            LogDebit::create([
+           $logDebit =  LogDebit::create([
                 'id_module_penyewaan' => $penyewaan->id,
                 'debit' => $total_sewa,
                 'total_hari_sewa' => $total_hari_sewa,
@@ -33,6 +32,8 @@ class LogDebit extends Model
                 'remark' => "Sewa, " . $penyewaan->motor->name . ", " . $penyewaan->nama_penyewa
             ]);
         }
+
+        return $logDebit;
     }
 
 

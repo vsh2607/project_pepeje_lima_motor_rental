@@ -18,6 +18,10 @@ class ModulePenyewaan extends Model
         return $this->belongsTo(MasterMotor::class, 'id_master_motor', 'id');
     }
 
+    public function debit(){
+        return $this->belongsTo(LogDebit::class, 'id', 'id_module_penyewaan');
+    }
+
     public static function getTotalHariHargaSewa($data)
     {
         $tanggal_penyewaan = new DateTime($data->tanggal_penyewaan);
@@ -37,7 +41,7 @@ class ModulePenyewaan extends Model
 
         }
         return [
-            'interval_sewa' => $interval,
+            'interval_sewa' => $interval <= 0 ? 1 : $interval,
             'harga_sewa' => $total_sewa
         ];
     }

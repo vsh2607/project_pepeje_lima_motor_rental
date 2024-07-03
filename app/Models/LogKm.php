@@ -11,4 +11,15 @@ class LogKm extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = ['id_master_motor', 'id_log_target', 'type', 'total_km'];
 
+    public function debit(){
+            return $this->belongsTo(LogDebit::class,'id_log_target', 'id');
+    }
+    public function credit(){
+            return $this->belongsTo(LogCredit::class,'id_log_target', 'id');
+    }
+
+    public function motor(){
+        return $this->belongsTo(MasterMotor::class, 'id_master_motor', 'id');
+    }
+
 }
