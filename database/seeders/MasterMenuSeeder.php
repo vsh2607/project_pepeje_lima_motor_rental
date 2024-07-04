@@ -140,6 +140,15 @@ class MasterMenuSeeder extends Seeder
             'priority' => 0,
             'icon' => ''
         ]);
+        MasterMenu::create([
+            'level' => 4,
+            'title' => 'Lap. Total Tiap Bulan',
+            'code' => 'laporan-total-tiap-bulan',
+            'is_dropdown' => 0,
+            'is_hidden' => 0,
+            'priority' => 0,
+            'icon' => ''
+        ]);
 
     }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\ReportHarianController;
 use App\Http\Controllers\ReportMonthlyController;
 use App\Http\Controllers\ModulePenyewaanController;
 use App\Http\Controllers\ReportEachMotorController;
+use App\Http\Controllers\ReportTotalMonthController;
 use App\Http\Controllers\ModulePengembalianController;
 use App\Http\Controllers\ReportAccumulationController;
 use App\Http\Controllers\ModuleAdministrationController;
@@ -106,6 +107,13 @@ Route::group(['prefix' => '/module-print', 'middleware' => ['auth']], function (
         Route::get('/', [ReportAccumulationController::class, 'index']);
         Route::get('/list-data', [ReportAccumulationController::class, 'listData']);
         Route::get('/print', [ReportAccumulationController::class, 'printData']);
+    });
+
+
+    Route::prefix('/laporan-total-tiap-bulan')->group(function () {
+        Route::get('/', [ReportTotalMonthController::class, 'index']);
+        Route::get('/list-data', [ReportTotalMonthController::class, 'listData']);
+        Route::get('/print', [ReportTotalMonthController::class, 'printData']);
     });
 
 });

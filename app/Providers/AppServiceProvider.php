@@ -4,6 +4,7 @@ namespace App\Providers;
 
 
 use App\Models\MasterMenu;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -18,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+
     }
 
     /**
@@ -48,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
                     foreach ($submenus as $submenu) {
                         array_push($submenu_arr, [
                             'text' => $submenu->title,
-                            'url' => $item->code . '/'.$submenu->code,
+                            'url' => $item->code . '/' . $submenu->code,
                             'icon' => $submenu->icon,
                         ]);
                     }

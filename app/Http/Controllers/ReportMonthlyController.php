@@ -23,7 +23,7 @@ class ReportMonthlyController extends Controller
 
         $dataArray = $model->map(function ($item) {
 
-            $createdAt = $item->type == 'debit' ? $item->debit->created_at : $item->credit->created_at;
+            $createdAt = $item->type == 'debit' ? $item->debit->created_at : $item->credit->credit_date;
             $formattedCreatedAt = Carbon::parse($createdAt)->format('Y-m-d');
             $remark = $item->type == 'debit' ? $item->debit->remark : $item->credit->remark;
 
@@ -59,7 +59,7 @@ class ReportMonthlyController extends Controller
         $total_credit = 0;
         $dataArray = $model->map(function ($item) use (&$total_debit, &$total_credit) {
 
-            $createdAt = $item->type == 'debit' ? $item->debit->created_at : $item->credit->created_at;
+            $createdAt = $item->type == 'debit' ? $item->debit->created_at : $item->credit->credit_date;
             $formattedCreatedAt = Carbon::parse($createdAt)->format('Y-m-d');
             $remark = $item->type == 'debit' ? $item->debit->remark : $item->credit->remark;
 

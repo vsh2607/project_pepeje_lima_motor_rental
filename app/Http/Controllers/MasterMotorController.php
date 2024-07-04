@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LogCredit;
+use Carbon\Carbon;
 use App\Models\LogKm;
+use App\Models\LogCredit;
 use App\Models\MasterMotor;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -146,11 +147,15 @@ class MasterMotorController extends Controller
                 'remark' => 'BELI AWAL MOTOR'
             ]);
 
+
+            $tanggal_pembelian = Carbon::parse($request->input('tanggal_pembelian'));
+
             LogKm::create([
                 'id_master_motor' => $dataMotor->id,
                 'id_log_target' => $logCredit->id,
                 'type' => 'credit',
-                'total_km' => (int) preg_replace('/[^0-9]/', '', $request->input('total_km'))
+                'total_km' => (int) preg_replace('/[^0-9]/', '', $request->input('total_km')),
+                'created_at' => $tanggal_pembelian->format('Y-m-d H:i:s'),
             ]);
 
             DB::commit();

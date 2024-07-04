@@ -131,7 +131,7 @@
 
         $('.btn-reset').on('click', function() {
             $('#filter_by_name').val('all').trigger('change');
-            $('#filter_by_date_start').val('{{ \Carbon\Carbon::now()->format('Y-m-d') }}');
+            $('#filter_by_date_start').val('{{ \Carbon\Carbon::now()->firstOfMonth()->format('Y-m-d') }}');
             $('#filter_by_date_end').val('{{ \Carbon\Carbon::now()->format('Y-m-d') }}');
             $('#list_table').DataTable().ajax.reload();
         });
