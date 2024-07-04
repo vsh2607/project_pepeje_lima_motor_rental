@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LogCredit;
+use Carbon\Carbon;
 use App\Models\LogKm;
+use App\Models\LogCredit;
 use App\Models\MasterMotor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -75,9 +76,11 @@ class ModuleAdministrationController extends Controller
                 'remark' => $request->input('remark'),
             ]);
 
+            $tanggal_credit = Carbon::parse($request->input('credit_date'));
             LogKm::create([
                 'id_master_motor' => $request->input('id_master_motor'),
                 'id_log_target' => $logCredit->id,
+                'created_at' => $tanggal_credit->format('Y-m-d H:i:s'),
                 'type' => 'credit',
                 'total_km' => (int) preg_replace('/[^0-9]/', '', $request->input('total_km'))
             ]);
@@ -138,8 +141,10 @@ class ModuleAdministrationController extends Controller
 
             }
 
+            $tanggal_credit = Carbon::parse($request->input('credit_date'));
             $dataLogKm->update([
                 'id_master_motor' => $request->input('id_master_motor'),
+                'created_at' => $tanggal_credit->format('Y-m-d H:i:s'),
                 'total_km' => (int) preg_replace('/[^0-9]/', '', $request->input('total_km'))
             ]);
 
