@@ -19,4 +19,8 @@ class MasterMotor extends Model
     public function credits(){
         return $this->hasMany(LogCredit::class, 'id_master_motor', 'id');
     }
+    public function debits(){
+        return $this->hasMany(LogDebit::class, 'id_master_motor', 'id');
+    }
+
 }

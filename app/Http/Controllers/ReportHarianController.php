@@ -70,7 +70,7 @@ class ReportHarianController extends Controller
         $data = [
             'date_start' => $filter_date_start,
             'date_end' => $filter_date_end,
-            'motor_name' => $filter_name == "all" ?  'Semua Motor' : $model->first()->penyewaan->motor->name,
+            'motor_name' => $filter_name == "all" ?  'Semua Motor' : $model->first()->penyewaan->motor->name ?? '',
             'data' => $model,
             'total_harga_sewa' => $model_sum
         ];

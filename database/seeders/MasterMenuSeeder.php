@@ -131,5 +131,15 @@ class MasterMenuSeeder extends Seeder
             'icon' => ''
         ]);
 
+        MasterMenu::create([
+            'level' => 4,
+            'title' => 'Lap. Akumulasi',
+            'code' => 'laporan-akumulasi',
+            'is_dropdown' => 0,
+            'is_hidden' => 0,
+            'priority' => 0,
+            'icon' => ''
+        ]);
+
     }
 }

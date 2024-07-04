@@ -11,7 +11,7 @@ class LogDebit extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['id_module_penyewaan', 'debit', 'total_debit', 'remark', 'total_hari_sewa'];
+    protected $fillable = ['id_module_penyewaan', 'debit', 'total_debit', 'remark', 'total_hari_sewa', 'id_master_motor'];
 
 
     static public function totalDebit(){
@@ -26,6 +26,7 @@ class LogDebit extends Model
         if (LogDebit::where('id_module_penyewaan', $penyewaan->id)->first() == null) {
            $logDebit =  LogDebit::create([
                 'id_module_penyewaan' => $penyewaan->id,
+                'id_master_motor' => $penyewaan->motor->id,
                 'debit' => $total_sewa,
                 'total_hari_sewa' => $total_hari_sewa,
                 'total_debit' => LogDebit::totalDebit() + $total_sewa,

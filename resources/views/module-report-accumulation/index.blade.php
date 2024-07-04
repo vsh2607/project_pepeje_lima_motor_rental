@@ -1,13 +1,10 @@
 @extends('adminlte::page')
 
-@section('title', 'Laporan Keuangan Bulanan')
+@section('title', 'Laporan Akumulasi Kendaraan')
 
 @section('adminlte_css_pre')
     <link rel="icon" href="{{ asset('assets/logo.png') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
-
     <style>
         .required::after {
             content: '*';
@@ -17,7 +14,7 @@
 @endsection
 
 @section('content_header')
-    <h1>Laporan Keuangan Bulanan</h1>
+    <h1>Laporan Akumulasi Kendaraan</h1>
 @stop
 
 @section('content')
@@ -33,24 +30,6 @@
     @endif
     <div class="container-fluid" style="margin-top:20px; text-transform: uppercase;">
         <div class="card">
-            <div class="card-header">
-                <div class="row">
-
-                    <div class="col-lg-1 col-sm-12">
-                        <p class="required">Pilih Bulan</p>
-                    </div>
-                    <div class="col-lg-2 col-sm-12">
-                        <input type="text" class="form-control" id="filter_by_date_start" name="filter_by_date_start"
-                            value="{{ \Carbon\Carbon::now()->format('Y-m') }}">
-                    </div>
-                    <div class="col-lg-2 col-sm-12">
-                        <button class="btn btn-filter btn-primary">Filter</button>
-                        <button class="btn btn-reset btn-secondary">Reset</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card">
 
             <div class="card-header">
                 <div class="float-right">
@@ -62,20 +41,17 @@
                 <table class="table table-stripped" id="list_table">
                     <thead>
                         <tr>
-                            <th style="width: 10px">NO</th>
-                            <th style="width: 20px">Tanggal</th>
-                            <th style="width: 20px">Nama Motor</th>
-                            <th style="width: 20px">Keterangan</th>
+                            <th style="width: 5px">NO</th>
+                            <th style="width: 5px">Nama Kendaraan</th>
                             <th style="width: 20px">Debit</th>
                             <th style="width: 20px">Kredit</th>
-
-
-
+                            <th style="width: 20px">Selisih</th>
                         </tr>
                     </thead>
 
                     <tfoot>
-                        <th colspan="4">Total </th>
+                        <th colspan="2">Total</th>
+                        <th></th>
                         <th></th>
                         <th></th>
 
@@ -88,40 +64,14 @@
 @stop
 
 @section('plugins.Datatables', true)
+@section('plugins.FlatPickr', true)
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
-
     <script>
-        $('#filter_by_date_start').flatpickr({
-            plugins: [
-                new monthSelectPlugin({
-                    shorthand: true,
-                    dateFormat: "Y-m",
-                    altFormat: "F Y",
-                })
-            ]
-        });
-
-        $('.btn-filter').on('click', function() {
-            $('#list_table').DataTable().ajax.reload();
-        });
-
-        $('.btn-reset').on('click', function() {
-            $('#filter_by_date_start').val('{{ \Carbon\Carbon::now()->format('Y-m') }}');
-            $('#list_table').DataTable().ajax.reload();
-        });
-
-
         $('.btn-print-pdf').on('click', function() {
-            let date_start = $('#filter_by_date_start').val();
-            let url =
-                `/module-print/laporan-keuangan-bulanan/print?dateStart=${encodeURIComponent(date_start)}`;
+            let url = `/module-print/laporan-akumulasi/print`;
             window.open(url, '_blank');
         });
-
 
 
         $(document).ready(function() {
@@ -131,9 +81,9 @@
                 paging: false,
                 info: false,
                 ajax: {
-                    url: "{{ url('/module-print/laporan-keuangan-bulanan/list-data') }}",
+                    url: "{{ url('/module-print/laporan-akumulasi/list-data') }}",
                     data: function(d) {
-                        d.date_start = $("#filter_by_date_start").val();
+                        d.name = $("#filter_by_name").val();
                     }
                 },
                 columnDefs: [{
@@ -149,33 +99,28 @@
                         }
                     },
                     {
-                        data: 'tanggal',
-                        name: 'tanggal'
+                        data: 'name',
+                        name: 'name'
                     },
                     {
-                        data: 'motor_name',
-                        name: 'motor_name'
+                        data: 'debits_sum_debit',
+                        name: 'debits_sum_debit'
                     },
                     {
-                        data: 'remark',
-                        name: 'remark'
+                        data: 'credits_sum_credit',
+                        name: 'credits_sum_credit'
                     },
                     {
-                        data: 'debit',
-                        name: 'debit'
-                    },
-                    {
-                        data: 'credit',
-                        name: 'credit'
-                    },
-
+                        data: 'total_saldo',
+                        name: 'total_saldo'
+                    }
 
                 ],
                 footerCallback: function(row, data, start, end, display) {
-                    var api = this.api();
+                    let api = this.api();
 
                     let totalDebit = api
-                        .column(4, {
+                        .column(2, {
                             page: 'current'
                         })
                         .data()
@@ -188,12 +133,12 @@
                         minimumFractionDigits: 0
                     });
 
-                    $(api.column(4).footer()).html(formattedTotalDebit);
+                    $(api.column(2).footer()).html(formattedTotalDebit);
 
 
 
                     let totalKredit = api
-                        .column(5, {
+                        .column(3, {
                             page: 'current'
                         })
                         .data()
@@ -206,8 +151,16 @@
                         minimumFractionDigits: 0
                     });
 
-                    $(api.column(5).footer()).html(formattedTotalKredit);
+                    $(api.column(3).footer()).html(formattedTotalKredit);
 
+                    let totalDeposit = totalDebit - totalKredit;
+
+
+                    let formattedTotalDeposit = totalDeposit.toLocaleString('id-ID', {
+                        minimumFractionDigits: 0
+                    });
+
+                    $(api.column(4).footer()).html(formattedTotalDeposit);
 
                 }
 

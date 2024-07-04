@@ -5,12 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\MasterMotorController;
-use App\Http\Controllers\ModuleAdministrationController;
 use App\Http\Controllers\ReportHarianController;
-use App\Http\Controllers\ModulePenyewaanController;
-use App\Http\Controllers\ModulePengembalianController;
-use App\Http\Controllers\ReportEachMotorController;
 use App\Http\Controllers\ReportMonthlyController;
+use App\Http\Controllers\ModulePenyewaanController;
+use App\Http\Controllers\ReportEachMotorController;
+use App\Http\Controllers\ModulePengembalianController;
+use App\Http\Controllers\ReportAccumulationController;
+use App\Http\Controllers\ModuleAdministrationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,6 +100,12 @@ Route::group(['prefix' => '/module-print', 'middleware' => ['auth']], function (
         Route::get('/', [ReportMonthlyController::class, 'index']);
         Route::get('/list-data', [ReportMonthlyController::class, 'listData']);
         Route::get('/print', [ReportMonthlyController::class, 'printData']);
+    });
+
+    Route::prefix('/laporan-akumulasi')->group(function () {
+        Route::get('/', [ReportAccumulationController::class, 'index']);
+        Route::get('/list-data', [ReportAccumulationController::class, 'listData']);
+        Route::get('/print', [ReportAccumulationController::class, 'printData']);
     });
 
 });

@@ -89,7 +89,7 @@
 
                     <div class="form-group">
                         <label for="total_km" class="required">Total KM</label>
-                        <input type="text" class="my-input form-control" id="total_km" name="total_km"
+                        <input type="text" class="my-input form-control" id="total_km" name="total_km" required
                             placeholder="Masukkan KM Motor Awal">
                     </div>
 
