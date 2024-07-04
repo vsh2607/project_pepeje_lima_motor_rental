@@ -55,8 +55,6 @@ class ReportHarianController extends Controller
         $filter_date_start = $request->dateStart;
         $filter_date_end = $request->dateEnd;
 
-
-
         $model = LogDebit::with(['penyewaan', 'penyewaan.motor'])
             ->whereHas('penyewaan', function ($query) use ($filter_date_start, $filter_date_end) {
                 $query->whereBetween('tanggal_pengembalian', [$filter_date_start, $filter_date_end]);

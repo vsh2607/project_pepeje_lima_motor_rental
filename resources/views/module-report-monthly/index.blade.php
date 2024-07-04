@@ -1,10 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'Laporan Keuangan Kendaraan')
+@section('title', 'Laporan Keuangan Bulanan')
 
 @section('adminlte_css_pre')
     <link rel="icon" href="{{ asset('assets/logo.png') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
+
     <style>
         .required::after {
             content: '*';
@@ -14,7 +17,7 @@
 @endsection
 
 @section('content_header')
-    <h1>Laporan Keuangan Kendaraan</h1>
+    <h1>Laporan Keuangan Bulanan</h1>
 @stop
 
 @section('content')
@@ -32,13 +35,13 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
+
                     <div class="col-lg-1 col-sm-12">
-                        <p class='required'>Nama Motor</p>
+                        <p class="required">Pilih Bulan</p>
                     </div>
                     <div class="col-lg-2 col-sm-12">
-                        <select name="filter_by_name" id="filter_by_name" class="form-control">
-                        </select>
-
+                        <input type="text" class="form-control" id="filter_by_date_start" name="filter_by_date_start"
+                            value="{{ \Carbon\Carbon::now()->format('Y-m') }}">
                     </div>
                     <div class="col-lg-2 col-sm-12">
                         <button class="btn btn-filter btn-primary">Filter</button>
@@ -59,19 +62,20 @@
                 <table class="table table-stripped" id="list_table">
                     <thead>
                         <tr>
-                            <th style="width: 5px">NO</th>
-                            <th style="width: 5px">Tanggal</th>
-                            <th style="width: 5px">KM</th>
-                            <th style="width: 20px">Uraian</th>
+                            <th style="width: 10px">NO</th>
+                            <th style="width: 20px">Tanggal</th>
+                            <th style="width: 20px">Nama Motor</th>
+                            <th style="width: 20px">Keterangan</th>
                             <th style="width: 20px">Debit</th>
-                            <th style="width: 20px">Kredit</th>
-                            <th style="width: 20px">Saldo</th>
+                            <th style="width: 20px">Credit</th>
+
+
+
                         </tr>
                     </thead>
 
                     <tfoot>
-                        <th colspan="4">Total</th>
-                        <th></th>
+                        <th colspan="4">Total </th>
                         <th></th>
                         <th></th>
 
@@ -84,35 +88,21 @@
 @stop
 
 @section('plugins.Datatables', true)
-@section('plugins.FlatPickr', true)
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+
     <script>
-        $('#filter_by_name').select2({
-            ajax: {
-                url: "{{ url('resources/list-all-motor') }}",
-                data: function(params) {
-                    let query = {
-                        name: params.term
-                    };
-                    return query;
-                },
-                dataType: 'json',
-                delay: 250,
-                processResults: function(data) {
-                    let processedData = $.map(data, function(obj) {
-                        obj.id = obj.id;
-                        obj.text = obj.name;
-                        obj.nomor_polisi = obj.nomor_polisi;
-                        return obj;
-                    });
-                    return {
-                        results: processedData,
-                    };
-                },
-            },
-            minimumInputLength: 0,
-            placeholder: 'Cari Motor Tersedia',
+        $('#filter_by_date_start').flatpickr({
+            plugins: [
+                new monthSelectPlugin({
+                    shorthand: true,
+                    dateFormat: "Y-m",
+                    altFormat: "F Y",
+                })
+            ]
         });
 
         $('.btn-filter').on('click', function() {
@@ -120,16 +110,15 @@
         });
 
         $('.btn-reset').on('click', function() {
-            $('#filter_by_name').val('all').trigger('change');
+            $('#filter_by_date_start').val('{{ \Carbon\Carbon::now()->format('Y-m') }}');
             $('#list_table').DataTable().ajax.reload();
         });
 
 
-        $('.btn-print-pdf').on('click', function(){
-            let name = $('#filter_by_name').val();
+        $('.btn-print-pdf').on('click', function() {
             let date_start = $('#filter_by_date_start').val();
-            let date_end = $('#filter_by_date_end').val();
-            let url = `/module-print/laporan-keuangan-kendaraan/print?name=${encodeURIComponent(name)}`;
+            let url =
+                `/module-print/laporan-keuangan-bulanan/print?dateStart=${encodeURIComponent(date_start)}`;
             window.open(url, '_blank');
         });
 
@@ -142,9 +131,9 @@
                 paging: false,
                 info: false,
                 ajax: {
-                    url: "{{ url('/module-print/laporan-keuangan-kendaraan/list-data') }}",
+                    url: "{{ url('/module-print/laporan-keuangan-bulanan/list-data') }}",
                     data: function(d) {
-                        d.name = $("#filter_by_name").val();
+                        d.date_start = $("#filter_by_date_start").val();
                     }
                 },
                 columnDefs: [{
@@ -153,8 +142,7 @@
                     "searchable": false,
                     "orderable": false,
                 }, ],
-                columns: [
-                    {
+                columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
                             return meta.row + 1;
@@ -165,8 +153,8 @@
                         name: 'tanggal'
                     },
                     {
-                        data: 'total_km',
-                        name: 'total_km'
+                        data: 'motor_name',
+                        name: 'motor_name'
                     },
                     {
                         data: 'remark',
@@ -180,15 +168,11 @@
                         data: 'credit',
                         name: 'credit'
                     },
-                    {
-                        data: 'total_deposit',
-                        name: 'total_deposit'
-                    },
 
 
                 ],
                 footerCallback: function(row, data, start, end, display) {
-                    let api = this.api();
+                    var api = this.api();
 
                     let totalDebit = api
                         .column(4, {
@@ -224,14 +208,6 @@
 
                     $(api.column(5).footer()).html(formattedTotalKredit);
 
-                    let totalDeposit = totalDebit - totalKredit;
-
-
-                    let formattedTotalDeposit = totalDeposit.toLocaleString('id-ID', {
-                        minimumFractionDigits: 0
-                    });
-
-                    $(api.column(6).footer()).html(formattedTotalDeposit);
 
                 }
 

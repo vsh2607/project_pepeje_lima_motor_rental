@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\LogKm;
-use App\Models\MasterMotor;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Yajra\DataTables\Facades\DataTables;
@@ -21,7 +20,6 @@ class ReportEachMotorController extends Controller
         $filter_id = $request->name;
         if ($filter_id != null) {
             $model = LogKm::with(['motor', 'debit', 'credit'])->where('id_master_motor', $filter_id)->orderBy('created_at', 'ASC')->get();
-
 
             $total_deposit = 0;
 
@@ -71,8 +69,7 @@ class ReportEachMotorController extends Controller
         if($filter_id == "null"){
             return 'Data Motor Tidak Ada';
         }
-
-
+        //Jangan buat seperti ini lagi ya len.. -_-
         $model = LogKm::with(['motor', 'debit', 'credit'])->where('id_master_motor', $filter_id)->orderBy('created_at', 'ASC')->get();
 
         $total_deposit = 0;

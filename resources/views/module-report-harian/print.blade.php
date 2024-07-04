@@ -41,22 +41,27 @@
                     <img src="{{ public_path('assets/header_kwitansi.jpg') }}" alt="logo kwitansi" width="760px">
                 </th>
             </tr>
+            <tr>
+                <th style="padding-top: 10px; padding-bottom:15px; text-size: 50px" colspan="4">
+                   LAPORAN SEWA HARIAN
+                </th>
+            </tr>
         </thead>
         <tbody>
             <tr>
-                <td style="width: 200px;">Jenis Motor</td>
+                <td style="width: 150px;">Jenis Motor</td>
                 <td style="width: 20px;">:</td>
-                <td style="font-weight: bold;">{{ $motor_name }}</td>
+                <td>{{ $motor_name }}</td>
             </tr>
             <tr>
                 <td>Tanggal Awal</td>
                 <td>:</td>
-                <td style="font-weight: bold;">{{ $date_start }}</td>
+                <td>{{ $date_start }}</td>
             </tr>
             <tr>
                 <td>Tanggal Akhir</td>
                 <td>:</td>
-                <td style="font-weight: bold;">{{ $date_end }}</td>
+                <td>{{ $date_end }}</td>
             </tr>
         </tbody>
     </table>
@@ -90,10 +95,12 @@
                     <td>
                         @php
                             $harga_sewa = 0;
+
                             if ($item->penyewaan->jenis_penyewaan == 'harian') {
                                 $harga_sewa = number_format($item->penyewaan->motor->harga_sewa_harian, 0, ',', '.') . ' ('.$item->penyewaan->jenis_penyewaan.')';
+                            }else{
+                                $harga_sewa = number_format($item->penyewaan->motor->harga_sewa_bulanan, 0, ',', '.') . ' ('.$item->penyewaan->jenis_penyewaan.')';
                             }
-                            $harga_sewa = number_format($item->penyewaan->motor->harga_sewa_bulanan, 0, ',', '.') . ' ('.$item->penyewaan->jenis_penyewaan.')';
                         @endphp
                         {{ $harga_sewa }}
                     </td>

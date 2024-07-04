@@ -1,6 +1,6 @@
 <html>
 
-<title>Laporan Keuangan Motor {{ $motor_name }}</title>
+<title>Laporan Keuangan Bulan {{ $month }}</title>
 
 <head>
     <style>
@@ -42,36 +42,27 @@
                 </th>
             </tr>
             <tr>
-                <th style="padding-top: 10px; padding-bottom:15px; text-size: 50px" colspan="4">
-                   LAPORAN KEUANGAN KENDARAAN
+                <th style="padding-top: 10px; padding-bottom:15px; text-size: 50px; text-transform:uppercase;" colspan="4">
+                    LAPORAN KEUANGAN BULANAN
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td style="width: 150px;">Jenis Motor</td>
-                <td style="width: 20px;">:</td>
-                <td>{{ $motor_name }}</td>
+                <td style="width: 150px; font-weight:bold;">{{ $month }}</td>
             </tr>
-            <tr>
-                <td>Nomor Polisi</td>
-                <td>:</td>
-                <td>{{ $nomor_polisi }}</td>
-            </tr>
-
         </tbody>
     </table>
 
     <table class="content-table">
         <thead>
             <tr>
-                <th style="width: 5px">NO</th>
-                <th style="width: 5px">Tanggal</th>
-                <th style="width: 5px">KM</th>
-                <th style="width: 20px">Uraian</th>
-                <th style="width: 20px">Debit</th>
-                <th style="width: 20px">Kredit</th>
-                <th style="width: 20px">Saldo</th>
+                <th style="width: 1px">NO</th>
+                <th style="width: 1px">Tanggal</th>
+                <th style="width: 5px">Nama Motor</th>
+                <th style="width: 20px">Keterangan</th>
+                <th style="width: 10px">Debit</th>
+                <th style="width: 10px">Kredit</th>
             </tr>
         </thead>
         <tbody>
@@ -79,11 +70,10 @@
                 <tr>
                     <td>{{ ++$key }}</td>
                     <td>{{ $item['tanggal'] }}</td>
-                    <td style="text-align: center;">{{ number_format($item['total_km'], 0, ',', '.') }}</td>
+                    <td>{{ $item['motor_name'] }}</td>
                     <td>{{ $item['remark'] }}</td>
                     <td style="text-align: right;">{{ number_format($item['debit'], 0, ',', '.') }}</td>
                     <td style="text-align: right;">{{ number_format($item['credit'], 0, ',', '.') }}</td>
-                    <td style="text-align: right;">{{ number_format($item['total_deposit'], 0, ',', '.') }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -92,7 +82,10 @@
                 <th colspan="4">Total</th>
                 <th style="text-align: right">{{ number_format($total_debit, 0, ',', '.') }}</th>
                 <th style="text-align: right">{{ number_format($total_credit, 0, ',', '.') }}</th>
-                <th style="text-align: right">{{ number_format($total_debit - $total_credit, 0, ',', '.') }}</th>
+            </tr>
+            <tr>
+                <th colspan="4">Total Pemasukan Bulan {{ $month }}</th>
+                <th colspan="2">{{  number_format($total_debit - $total_credit, 0, ',', '.')  }}</th>
             </tr>
         </tfoot>
     </table>

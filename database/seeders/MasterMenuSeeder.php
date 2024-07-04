@@ -121,6 +121,15 @@ class MasterMenuSeeder extends Seeder
             'priority' => 0,
             'icon' => ''
         ]);
+        MasterMenu::create([
+            'level' => 4,
+            'title' => 'Lap. Keuangan Bulanan',
+            'code' => 'laporan-keuangan-bulanan',
+            'is_dropdown' => 0,
+            'is_hidden' => 0,
+            'priority' => 0,
+            'icon' => ''
+        ]);
 
     }
 }
