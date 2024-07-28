@@ -69,7 +69,7 @@ class ReportTotalMonthController extends Controller
             )
             ->leftJoin('log_credits', 'log_kms.id_log_target', '=', 'log_credits.id')
             ->leftJoin('log_debits', 'log_kms.id_log_target', '=', 'log_debits.id')
-            ->whereYear('log_credits.created_at', $year)
+            ->whereYear('log_kms.created_at', $year)
             ->groupBy(DB::raw('DATE_FORMAT(log_kms.created_at, "%Y-%m")'))->get();
 
         $total_debit = 0;
