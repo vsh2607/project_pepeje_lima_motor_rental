@@ -19,7 +19,7 @@ class MasterUserSeeder extends Seeder
             'name' => 'Admin',
             'username' => 'admin',
             'user_type' => 'ADMIN',
-            'password' => Hash::make('123')
+            'password' => Hash::make('admin123')
         ]);
     }
 }
