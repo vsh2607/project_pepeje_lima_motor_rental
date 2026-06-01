@@ -1,64 +1,172 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
-
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="public/assets/logo.png" alt="PepejeLima Logo" width="120" />
 </p>
 
-## About Laravel
+<h1 align="center">PepejeLima — Motorcycle Rental System</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p align="center">
+  A web-based motorcycle rental management system for PepejeLima, a rental business based in Yogyakarta, Indonesia.
+</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<p align="center">
+  <img src="https://img.shields.io/badge/PHP-7.3%20|%208.0-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP 7.3 | 8.0" />
+  <img src="https://img.shields.io/badge/Laravel-8.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel 8" />
+  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
+  <img src="https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white" alt="Bootstrap 5" />
+  <img src="https://img.shields.io/badge/jQuery-3.7-0769AD?style=for-the-badge&logo=jquery&logoColor=white" alt="jQuery" />
+  <img src="https://img.shields.io/badge/AdminLTE-3.x-00A65A?style=for-the-badge&logoColor=white" alt="AdminLTE 3" />
+  <img src="https://img.shields.io/badge/Laravel%20Mix-6.x-646CFF?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel Mix 6" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License MIT" />
+</p>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 📋 Overview
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**PepejeLima** is a Laravel 8 web application built for a motorcycle rental business in Yogyakarta. It streamlines the entire rental workflow — from managing motorcycle inventory and processing rentals to handling returns and generating detailed financial reports. The interface is in **Indonesian (Bahasa Indonesia)**.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## ✨ Features
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+| Feature | Description |
+|---|---|
+| **Motorcycle Inventory** | Full CRUD for motorcycle data — plate numbers, owner info, tax dates, purchase history, images |
+| **Rental Management** | Process daily & monthly rentals with customer data, contact info, and guarantor photo uploads |
+| **Return Processing** | Handle motorcycle returns with seamless status updates |
+| **Motor Administration** | Track administrative tasks, expenses, and maintenance per motorcycle |
+| **Role-Based Access** | User authentication with Sanctum, user type privileges, and menu-level permissions |
+| **Daily Rental Report** | Generate & print daily rental activity reports |
+| **Per-Vehicle Finance** | Financial breakdown report for each individual motorcycle |
+| **Monthly Finance Report** | Monthly revenue and expense summaries |
+| **Accumulated Report** | Year-to-date accumulated financial overview |
+| **Total Per Month Report** | Compare monthly totals across the year |
+| **Financial Logs** | Track all debits, credits, and kilometer logs per motorcycle |
+| **PDF Export** | Print-ready PDF reports powered by DOMPDF |
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## 🛠 Tech Stack
 
-## Contributing
+| Layer | Technology |
+|---|---|
+| **Backend** | PHP 7.3 / 8.0, Laravel 8.x |
+| **Frontend** | Blade Templates, jQuery 3.7, Vanilla JS |
+| **Admin Panel** | AdminLTE 3.x (Bootstrap 5.3) |
+| **Database** | MySQL via Eloquent ORM |
+| **Auth** | Laravel Sanctum 2.x |
+| **Data Tables** | Yajra DataTables 9.x |
+| **PDF Generation** | DOMPDF (barryvdh/laravel-dompdf) |
+| **Form Enhancements** | Select2 4.x |
+| **HTTP Client** | Guzzle 7.x |
+| **Asset Bundling** | Laravel Mix 6.x, Sass |
+| **Testing** | PHPUnit 9.x |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 📦 Installation
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Prerequisites
 
-## Security Vulnerabilities
+- PHP ^7.3 | ^8.0
+- Composer
+- Node.js & npm
+- MySQL database server
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Steps
 
-## License
+1. **Clone the repository**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+   ```bash
+   git clone https://github.com/your-username/pepejelima.git
+   cd pepejelima
+   ```
+
+2. **Install PHP dependencies**
+
+   ```bash
+   composer install
+   ```
+
+3. **Install JavaScript dependencies**
+
+   ```bash
+   npm install
+   ```
+
+4. **Configure environment**
+
+   ```bash
+   copy .env.example .env
+   php artisan key:generate
+   ```
+
+5. **Set up database** — Edit `.env` with your MySQL credentials:
+
+   ```
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=pepejelima
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+6. **Run migrations & seeders**
+
+   ```bash
+   php artisan migrate --seed
+   ```
+
+7. **Build frontend assets**
+
+   ```bash
+   npm run production
+   ```
+
+8. **Start the development server**
+
+   ```bash
+   php artisan serve
+   ```
+
+   Visit **http://localhost:8000** in your browser.
+
+---
+
+## 🚀 Usage
+
+| Page | Route | Description |
+|---|---|---|
+| Dashboard | `/dashboard` | Overview with rental statistics and quick access |
+| Motorcycle Inventory | `/master-data/master-motor` | Manage all motorcycle data (add, edit, view) |
+| Rental Management | `/module-manajemen/module-sewa` | Process new rentals and view active leases |
+| Return Processing | `/module-manajemen/module-kembali` | Handle motorcycle returns with status updates |
+| Motor Administration | `/module-manajemen/module-administrasi-motor` | Track maintenance & admin per motorcycle |
+| Daily Report | `/module-print/laporan-sewa-harian` | View & print daily rental activity |
+| Per-Vehicle Finance | `/module-print/laporan-keuangan-kendaraan` | Financial report per motorcycle |
+| Monthly Finance | `/module-print/laporan-keuangan-bulanan` | Monthly financial summaries |
+| Accumulated Report | `/module-print/laporan-akumulasi` | Year-to-date accumulated report |
+| Total Per Month | `/module-print/laporan-total-tiap-bulan` | Monthly totals comparison |
+
+---
+
+## 🗄 Database Schema
+
+| Table | Purpose |
+|---|---|
+| `master_users` | System users with authentication credentials |
+| `master_user_types` | User role definitions for access control |
+| `master_motors` | Motorcycle inventory (plate, owner, tax, prices, images) |
+| `master_menus` | Menu structure for the AdminLTE sidebar |
+| `master_menu_privileges` | Role-based permissions per menu item |
+| `module_penyewaans` | Rental transactions (customer, dates, guarantor, status) |
+| `log_debits` | Debit / expense logs per motorcycle |
+| `log_credits` | Credit / income logs per motorcycle |
+| `log_kms` | Kilometer tracking logs per motorcycle |
+
+---
+
+## 📄 License
+
+This project is open source under the [MIT License](LICENSE).
